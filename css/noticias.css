@@ -68,3 +68,41 @@
   font-size:13px;
   font-weight:600;
 }
+.news-thumb {
+  width: 100%;
+  height: 220px;
+  overflow: hidden;
+}
+
+.news-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.news-no-image {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Fraunces", serif;
+  font-size: 28px;
+  color: var(--ink);
+  background: linear-gradient(
+      135deg,
+      rgba(255, 0, 191, 0.12),
+      rgba(0, 180, 180, 0.12)
+  );
+}
+
+.news-source {
+  margin-top: 15px;
+  font-size: 14px;
+  opacity: 0.8;
+}
+
+.news-source strong {
+  color: var(--ink);
+}
