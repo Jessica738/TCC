@@ -3,7 +3,7 @@
 ========================================================= */
 
 const NEWS_API_URL =
-    "https://script.google.com/macros/s/AKfycbwB4pHhHGYlUqI2_QhKEBqWJbJIo0W2NiCJBIDBemJm9GFsMk3L_gwcB1ED3VZrJfOH/exec";
+    "https://script.google.com/macros/s/AKfycbyl2saPqAM4lNAT7fXVx3a6a__WmOGe0-RRIRVzsSGCdQVo-LSqxBRlOwZnTKwMIaO1/exec";
 
 
 /* =========================================================
@@ -151,7 +151,7 @@ function renderNews() {
 
     newsGrid.innerHTML =
         news.map(
-            function (item, index) {
+            function (item, index) { 
 
                 return `
 

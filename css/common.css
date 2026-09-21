@@ -1,346 +1,1626 @@
-:root{
-  --ink:#ff00bf;
-  --paper:#f3ddf0;
-  --paper-2:#F1ECE1;
-  --card:#FFFFFF;
-  --teal:#5c1f51;
-  --teal-deep:#42043e;
-  --teal-tint:#E4F0EB;
-  --amber:#ff00bf;
-  --amber-tint:#F8ECD8;
-  --brick:#A6332B;
-  --brick-tint:#F6E2DF;
-  --violet:#6B4E8E;
-  --violet-tint:#ECE6F3;
-  --line:rgba(255, 255, 255, 0.14);
-  --text-soft:rgba(22,36,28,0.68);
-  --text-faint:rgba(22,36,28,0.48);
-  --radius:14px;
-  --font-display:'Fraunces',serif;
-  --font-body:'Work Sans',sans-serif;
-  --font-mono:'IBM Plex Mono',monospace;
+/* =====================================================
+   VARIÁVEIS
+===================================================== */
+
+:root {
+  --ink: #ff00bf;
+  --paper: #f3ddf0;
+  --paper-2: #F1ECE1;
+  --card: #FFFFFF;
+
+  --teal: #5c1f51;
+  --teal-deep: #42043e;
+  --teal-tint: #E4F0EB;
+
+  --amber: #ff00bf;
+  --amber-tint: #F8ECD8;
+
+  --brick: #A6332B;
+  --brick-tint: #F6E2DF;
+
+  --violet: #6B4E8E;
+  --violet-tint: #ECE6F3;
+
+  --line: rgba(255, 255, 255, 0.14);
+
+  --text-soft: rgba(22, 36, 28, 0.68);
+  --text-faint: rgba(22, 36, 28, 0.48);
+
+  --radius: 14px;
+
+  --font-display: 'Fraunces', serif;
+  --font-body: 'Work Sans', sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
 }
 
-[data-theme="dark"]{
-  --ink:#F3EFE6;
-  --paper:#12201A;
-  --paper-2:#0D1712;
-  --card:#182A22;
-  --teal:#ac22d5;
-  --teal-deep:#5f056b;
-  --teal-tint:#1B3A31;
-  --amber:#bc0000;
-  --amber-tint:#3A2E17;
-  --brick:#E58079;
-  --brick-tint:#3A1E1B;
-  --violet:#B7A0D6;
-  --violet-tint:#2C2440;
-  --line:rgba(243,239,230,0.14);
-  --text-soft:rgba(243,239,230,0.68);
-  --text-faint:rgba(243,239,230,0.48);
+
+/* =====================================================
+ TEMA ESCURO
+===================================================== */
+
+[data-theme="dark"] {
+  --ink: #F3EFE6;
+  --paper: #12201A;
+  --paper-2: #0D1712;
+  --card: #182A22;
+
+  --teal: #ac22d5;
+  --teal-deep: #5f056b;
+  --teal-tint: #1B3A31;
+
+  --amber: #bc0000;
+  --amber-tint: #3A2E17;
+
+  --brick: #E58079;
+  --brick-tint: #3A1E1B;
+
+  --violet: #B7A0D6;
+  --violet-tint: #2C2440;
+
+  --line: rgba(243, 239, 230, 0.14);
+
+  --text-soft: rgba(243, 239, 230, 0.68);
+  --text-faint: rgba(243, 239, 230, 0.48);
 }
 
-*{box-sizing:border-box;}
-html{scroll-behavior:smooth;}
 
-body{
-  margin:0;
-  background:var(--paper);
-  color:#5f056b;
-  font-family:var(--font-body);
-  line-height:1.6;
-  transition:background .25s ease,color .25s ease;
-  padding-top:96px;
+/* =====================================================
+ RESET
+===================================================== */
+
+* {
+  box-sizing: border-box;
 }
 
-h1,h2,h3,h4{
-  font-family:var(--font-display);
-  font-weight:500;
-  margin:0;
-  color:var(--ink);
+html {
+  scroll-behavior: smooth;
+  max-width: 100%;
+  overflow-x: hidden;
 }
 
-p{margin:0;}
-a{color:inherit;}
-button{font-family:var(--font-body);cursor:pointer;}
+body {
+  margin: 0;
 
-.eyebrow{
-  font-family:var(--font-mono);
-  font-size:12px;
-  letter-spacing:.08em;
-  text-transform:uppercase;
-  color:var(--teal);
-  font-weight:600;
+  background: var(--paper);
+  color: #5f056b;
+
+  font-family: var(--font-body);
+  line-height: 1.6;
+
+  transition:
+      background 0.25s ease,
+      color 0.25s ease;
+
+  max-width: 100%;
+  overflow-x: hidden;
+
+  /*
+     Não usamos mais padding-top fixo porque
+     a barra de segurança e o menu ficam no fluxo
+     da página em telas menores.
+  */
+  padding-top: 96px;
 }
 
-.wrap{max-width:1080px;margin:0 auto;padding:0 28px;}
-.hidden{display:none !important;}
 
-/* ============ BOTÕES GENÉRICOS ============ */
-.btn-primary{
-  background:var(--teal);
-  color:#fff;
-  border:none;
-  border-radius:999px;
-  padding:13px 24px;
-  font-size:15px;
-  font-weight:600;
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  margin: 0;
+  color: var(--ink);
 }
 
-.btn-secondary{
-  background:transparent;
-  color:var(--ink);
-  border:1px solid var(--line);
-  border-radius:999px;
-  padding:13px 24px;
-  font-size:15px;
-  font-weight:600;
+p {
+  margin: 0;
 }
 
-.chip-btn{
-  border:1px solid var(--line);
-  background:transparent;
-  border-radius:999px;
-  padding:5px 11px;
-  font-size:12px;
-  color:var(--text-soft);
+a {
+  color: inherit;
 }
 
-/* ============ SAFETY BAR ============ */
-.safety-bar{
-  position:fixed;
-  top:0;left:0;right:0;
-  z-index:1000;
-  background:var(--teal-deep);
-  color:#F3EFE6;
-  border-bottom:1px solid rgba(0,0,0,0.15);
-}
-.safety-inner{
-  max-width:1080px;
-  margin:0 auto;
-  padding:9px 28px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:12px;
-  flex-wrap:wrap;
-}
-.safety-msg{font-size:13px;color:rgba(243,239,230,0.8);}
-.safety-actions{display:flex;gap:10px;}
-
-.btn-exit,.btn-emergency{
-  border:none;
-  border-radius:999px;
-  padding:8px 16px;
-  font-size:13px;
-  font-weight:600;
-  display:inline-flex;
-  align-items:center;
-  gap:6px;
-}
-.btn-exit{background:rgba(255,255,255,0.14);color:#F3EFE6;}
-.btn-exit:hover{background:rgba(255,255,255,0.24);}
-.btn-emergency{background:var(--brick);color:#fff;}
-.btn-emergency:hover{background:#8f2a23;}
-
-/* ============ MAIN NAV ============ */
-.mainnav{
-  position:fixed;
-  top:38px;left:0;right:0;
-  z-index:999;
-  background:var(--paper);
-  border-bottom:1px solid var(--line);
+button {
+  font-family: var(--font-body);
+  cursor: pointer;
 }
 
-.nav-inner{
-  max-width:1080px;
-  margin:0 auto;
-  padding:12px 28px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:16px;
+
+/* =====================================================
+ CLASSE HIDDEN
+===================================================== */
+
+.hidden {
+  display: none !important;
 }
 
-.brand{
-  display:flex;
-  align-items:center;
-  gap:9px;
-  font-family:var(--font-display);
-  font-size:19px;
-  font-weight:600;
+
+/* =====================================================
+ CONTAINER
+===================================================== */
+
+.wrap {
+  width: min(1180px, calc(100% - 40px));
+  max-width: 1180px;
+
+  margin: 0 auto;
+
+  padding: 0 28px;
 }
 
-.brand-mark{
-  width:26px;height:26px;
-  border-radius:50%;
-  background:var(--teal);
-  flex-shrink:0;
+
+/* =====================================================
+ BOTÕES GENÉRICOS
+===================================================== */
+
+.btn-primary {
+  background: var(--teal);
+  color: #fff;
+
+  border: none;
+  border-radius: 999px;
+
+  padding: 13px 24px;
+
+  font-size: 15px;
+  font-weight: 600;
 }
 
-.nav-links{display:flex;gap:4px;flex-wrap:wrap;}
 
-.nav-links button{
-  background:none;
-  border:none;
-  font-size:14px;
-  color:var(--text-soft);
-  padding:8px 11px;
-  border-radius:8px;
-}
-.nav-links button:hover{background:var(--teal-tint);color:var(--teal);}
-.nav-links button.active{color:var(--teal);font-weight:600;}
+.btn-secondary {
+  background: transparent;
+  color: var(--ink);
 
-.nav-right{display:flex;align-items:center;gap:8px;}
+  border: 1px solid var(--line);
+  border-radius: 999px;
 
-.icon-btn{
-  width:36px;height:36px;
-  border-radius:50%;
-  border:1px solid var(--line);
-  background:var(--card);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:16px;
+  padding: 13px 24px;
+
+  font-size: 15px;
+  font-weight: 600;
 }
 
-.login-btn{
-  border:1px solid var(--line);
-  background:var(--card);
-  border-radius:999px;
-  padding:8px 16px;
-  font-size:13px;
-  font-weight:600;
+
+.chip-btn {
+  border: 1px solid var(--line);
+
+  background: transparent;
+
+  border-radius: 999px;
+
+  padding: 5px 11px;
+
+  font-size: 12px;
+
+  color: var(--text-soft);
 }
 
-.dropdown{position:relative;}
-.dropdown-menu{
-  position:absolute;
-  top:calc(100% + 8px);
-  left:0;
-  background:var(--card);
-  border:1px solid var(--line);
-  border-radius:12px;
-  padding:6px;
-  min-width:200px;
-  box-shadow:0 12px 28px rgba(0,0,0,0.12);
-}
-.dropdown-menu button{display:block;width:100%;text-align:left;}
 
-/* ============ GRID / CARD GENÉRICOS ============ */
-.grid{display:grid;gap:18px;}
-.grid-4{grid-template-columns:repeat(4,1fr);}
-.grid-3{grid-template-columns:repeat(3,1fr);}
-.grid-2{grid-template-columns:repeat(2,1fr);}
+/* =====================================================
+ SAFETY BAR
+===================================================== */
 
-.card{
-  background:var(--card);
-  border:1px solid var(--line);
-  border-radius:var(--radius);
-  padding:22px;
+.safety-bar {
+  /*
+     Em telas grandes continua fixa no topo.
+  */
+  position: fixed;
+
+  top: 0;
+  left: 0;
+  right: 0;
+
+  z-index: 1000;
+
+  background: var(--teal-deep);
+
+  color: #F3EFE6;
+
+  border-bottom: 1px solid rgba(0, 0, 0, 0.15);
 }
 
-/* ============ CABEÇALHO DE PÁGINAS INTERNAS ============ */
-.page-header{padding:44px 0 8px;}
-.page-header h2{font-size:32px;margin:8px 0 10px;}
-.page-header p{color:var(--text-soft);max-width:62ch;font-size:15px;}
-.page-grid{margin-top:24px;}
-.page-top{margin-top:12px;}
-.section-top{margin-top:32px;}
 
-/* ============ HOTLINES (usado em Denúncias e Contatos) ============ */
-.hotline-row{display:flex;gap:14px;flex-wrap:wrap;margin-top:18px;}
-.hotline{
-  background:var(--card);
-  border:1px solid var(--line);
-  border-radius:12px;
-  padding:16px 20px;
-  min-width:150px;
-}
-.hotline .num{
-  font-family:var(--font-mono);
-  font-size:22px;
-  font-weight:600;
-  color:var(--teal);
-}
-.hotline .lbl{font-size:12.5px;color:var(--text-soft);margin-top:4px;}
+.safety-inner {
+  width: min(1180px, calc(100% - 40px));
 
-/* ============ FORM-ROW (usado no modal de Login e no form de Denúncias) ============ */
-.form-row{margin-bottom:16px;}
-.form-row label{display:block;font-size:13px;font-weight:600;margin-bottom:6px;}
+  max-width: 1180px;
+
+  margin: 0 auto;
+
+  padding: 9px 28px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 12px;
+
+  flex-wrap: wrap;
+}
+
+
+.safety-msg {
+  font-size: 13px;
+
+  color: rgba(243, 239, 230, 0.8);
+}
+
+
+.safety-actions {
+  display: flex;
+
+  gap: 10px;
+
+  flex-shrink: 0;
+}
+
+
+/* =====================================================
+ BOTÕES DA SAFETY BAR
+===================================================== */
+
+.btn-exit,
+.btn-emergency {
+  border: none;
+
+  border-radius: 999px;
+
+  padding: 8px 16px;
+
+  font-size: 13px;
+
+  font-weight: 600;
+
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 6px;
+}
+
+
+.btn-exit {
+  background: rgba(255, 255, 255, 0.14);
+
+  color: #F3EFE6;
+}
+
+
+.btn-exit:hover {
+  background: rgba(255, 255, 255, 0.24);
+}
+
+
+.btn-emergency {
+  background: var(--brick);
+
+  color: #fff;
+}
+
+
+.btn-emergency:hover {
+  background: #8f2a23;
+}
+
+
+/* =====================================================
+ NAVEGAÇÃO PRINCIPAL
+===================================================== */
+
+.mainnav {
+  position: fixed;
+
+  top: 38px;
+
+  left: 0;
+  right: 0;
+
+  z-index: 999;
+
+  background: var(--paper);
+
+  border-bottom: 1px solid var(--line);
+}
+
+
+.nav-inner {
+  width: min(1180px, calc(100% - 40px));
+
+  max-width: 1180px;
+
+  margin: 0 auto;
+
+  padding: 12px 28px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 16px;
+
+  min-width: 0;
+}
+
+
+/* =====================================================
+ LOGO
+===================================================== */
+
+.brand {
+  display: flex;
+
+  align-items: center;
+
+  gap: 9px;
+
+  font-family: var(--font-display);
+
+  font-size: 19px;
+
+  font-weight: 600;
+
+  flex-shrink: 0;
+}
+
+
+.brand-mark {
+  width: 26px;
+  height: 26px;
+
+  border-radius: 50%;
+
+  background: var(--teal);
+
+  flex-shrink: 0;
+}
+
+
+/* =====================================================
+ LINKS DO MENU
+===================================================== */
+
+.nav-links {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: flex-end;
+
+  gap: 4px;
+
+  flex-wrap: wrap;
+
+  min-width: 0;
+}
+
+
+.nav-links button,
+.nav-links a {
+  white-space: nowrap;
+}
+
+
+.nav-links button {
+  background: none;
+
+  border: none;
+
+  font-size: 14px;
+
+  color: var(--text-soft);
+
+  padding: 8px 11px;
+
+  border-radius: 8px;
+}
+
+
+.nav-links button:hover {
+  background: var(--teal-tint);
+
+  color: var(--teal);
+}
+
+
+.nav-links button.active {
+  color: var(--teal);
+
+  font-weight: 600;
+}
+
+
+/* =====================================================
+ LADO DIREITO
+===================================================== */
+
+.nav-right {
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  flex-shrink: 0;
+}
+
+
+.icon-btn {
+  width: 36px;
+  height: 36px;
+
+  border-radius: 50%;
+
+  border: 1px solid var(--line);
+
+  background: var(--card);
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  font-size: 16px;
+}
+
+
+.login-btn {
+  border: 1px solid var(--line);
+
+  background: var(--card);
+
+  border-radius: 999px;
+
+  padding: 8px 16px;
+
+  font-size: 13px;
+
+  font-weight: 600;
+}
+
+
+/* =====================================================
+ DROPDOWN "MAIS"
+===================================================== */
+
+.dropdown {
+  position: relative;
+}
+
+
+.dropdown-menu {
+  position: absolute;
+
+  top: calc(100% + 8px);
+
+  left: 0;
+
+  background: var(--card);
+
+  border: 1px solid var(--line);
+
+  border-radius: 12px;
+
+  padding: 6px;
+
+  min-width: 200px;
+
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
+
+  z-index: 10000;
+}
+
+
+.dropdown-menu button {
+  display: block;
+
+  width: 100%;
+
+  text-align: left;
+}
+
+
+/* =====================================================
+ GRID
+===================================================== */
+
+.grid {
+  display: grid;
+
+  gap: 18px;
+}
+
+
+.grid-4 {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+
+.grid-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+
+.grid-2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+
+/* =====================================================
+ CARDS
+===================================================== */
+
+.card {
+  background: var(--card);
+
+  border: 1px solid var(--line);
+
+  border-radius: var(--radius);
+
+  padding: 22px;
+}
+
+
+/* =====================================================
+ CABEÇALHO DAS PÁGINAS
+===================================================== */
+
+.page-header {
+  padding: 44px 0 8px;
+}
+
+
+.page-header h2 {
+  font-size: 32px;
+
+  margin: 8px 0 10px;
+}
+
+
+.page-header p {
+  color: var(--text-soft);
+
+  max-width: 62ch;
+
+  font-size: 15px;
+}
+
+
+.page-grid {
+  margin-top: 24px;
+}
+
+
+.page-top {
+  margin-top: 12px;
+}
+
+
+.section-top {
+  margin-top: 32px;
+}
+
+
+/* =====================================================
+ HOTLINES
+===================================================== */
+
+.hotline-row {
+  display: flex;
+
+  gap: 14px;
+
+  flex-wrap: wrap;
+
+  margin-top: 18px;
+}
+
+
+.hotline {
+  background: var(--card);
+
+  border: 1px solid var(--line);
+
+  border-radius: 12px;
+
+  padding: 16px 20px;
+
+  min-width: 150px;
+}
+
+
+.hotline .num {
+  font-family: var(--font-mono);
+
+  font-size: 22px;
+
+  font-weight: 600;
+
+  color: var(--teal);
+}
+
+
+.hotline .lbl {
+  font-size: 12.5px;
+
+  color: var(--text-soft);
+
+  margin-top: 4px;
+}
+
+
+/* =====================================================
+ FORMULÁRIOS
+===================================================== */
+
+.form-row {
+  margin-bottom: 16px;
+}
+
+
+.form-row label {
+  display: block;
+
+  font-size: 13px;
+
+  font-weight: 600;
+
+  margin-bottom: 6px;
+}
+
+
 .form-row input,
 .form-row select,
-.form-row textarea{
-  width:100%;
-  border:1px solid var(--line);
-  border-radius:9px;
-  padding:11px 13px;
-  background:var(--paper);
-  color:var(--ink);
-  font-family:var(--font-body);
-  font-size:14px;
-}
-.form-row textarea{resize:vertical;min-height:100px;}
-.checkbox-label{display:flex;align-items:center;gap:8px;font-weight:400 !important;}
+.form-row textarea {
+  width: 100%;
 
-/* ============ FOOTER ============ */
-footer{border-top:1px solid var(--line);padding:40px 0;margin-top:20px;}
-.foot-grid{
-  display:flex;
-  justify-content:space-between;
-  flex-wrap:wrap;
-  gap:24px;
-  font-size:13px;
-  color:var(--text-soft);
-}
-.social-links{display:flex;gap:14px;}
+  border: 1px solid var(--line);
 
-/* ============ MODAL (emergência / login) ============ */
-.modal-overlay{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,0.5);
-  z-index:2000;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding:20px;
-}
-.modal-box{
-  background:var(--card);
-  border-radius:16px;
-  padding:28px;
-  max-width:420px;
-  width:100%;
-}
-.modal-box h3{font-size:20px;margin-bottom:10px;}
-.modal-box p{font-size:13.5px;color:var(--text-soft);margin-bottom:16px;}
-.modal-close{
-  border:none;
-  background:var(--teal);
-  color:#fff;
-  border-radius:999px;
-  padding:10px 20px;
-  font-weight:600;
-  font-size:13.5px;
-}
-.modal-hotlines{margin-top:0;}
+  border-radius: 9px;
 
-/* ============ RESPONSIVIDADE ============ */
-@media (max-width: 820px) {
-  .hero-grid{grid-template-columns:1fr;}
-  .grid-4{grid-template-columns:repeat(2,1fr);}
-  .grid-3{grid-template-columns:repeat(2,1fr);}
-  .nav-links{display:none;}
-  body{padding-top:118px;}
+  padding: 11px 13px;
+
+  background: var(--paper);
+
+  color: var(--ink);
+
+  font-family: var(--font-body);
+
+  font-size: 14px;
 }
 
-@media (max-width: 520px) {
-  .grid-4,.grid-3,.grid-2{grid-template-columns:1fr;}
-  .hero h1{font-size:32px;}
-  .comment-form{flex-direction:column;}
-  .comment-form button{width:100%;}
-  .map-search{flex-direction:column;}
-  .map-search button{padding:11px 20px;}
-  .alert-box{flex-direction:column;}
+
+.form-row textarea {
+  resize: vertical;
+
+  min-height: 100px;
+}
+
+
+.checkbox-label {
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  font-weight: 400 !important;
+}
+
+
+/* =====================================================
+ FOOTER
+===================================================== */
+
+footer {
+  border-top: 1px solid var(--line);
+
+  padding: 40px 0;
+
+  margin-top: 20px;
+}
+
+
+.foot-grid {
+  display: flex;
+
+  justify-content: space-between;
+
+  flex-wrap: wrap;
+
+  gap: 24px;
+
+  font-size: 13px;
+
+  color: var(--text-soft);
+}
+
+
+.social-links {
+  display: flex;
+
+  gap: 14px;
+}
+
+
+/* =====================================================
+ MODAIS
+===================================================== */
+
+.modal-overlay {
+  position: fixed;
+
+  inset: 0;
+
+  background: rgba(0, 0, 0, 0.5);
+
+  z-index: 2000;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  padding: 20px;
+}
+
+
+.modal-box {
+  background: var(--card);
+
+  border-radius: 16px;
+
+  padding: 28px;
+
+  max-width: 420px;
+
+  width: 100%;
+}
+
+
+.modal-box h3 {
+  font-size: 20px;
+
+  margin-bottom: 10px;
+}
+
+
+.modal-box p {
+  font-size: 13.5px;
+
+  color: var(--text-soft);
+
+  margin-bottom: 16px;
+}
+
+
+.modal-close {
+  border: none;
+
+  background: var(--teal);
+
+  color: #fff;
+
+  border-radius: 999px;
+
+  padding: 10px 20px;
+
+  font-weight: 600;
+
+  font-size: 13.5px;
+}
+
+
+.modal-hotlines {
+  margin-top: 0;
+}
+
+
+/* =====================================================
+ BOTÃO HAMBÚRGUER
+===================================================== */
+
+.menu-hamburguer {
+  display: none;
+
+  background: transparent;
+
+  border: none;
+
+  color: var(--ink);
+
+  font-size: 28px;
+
+  line-height: 1;
+
+  cursor: pointer;
+
+  padding: 8px;
+
+  width: 44px;
+
+  height: 44px;
+
+  align-items: center;
+
+  justify-content: center;
+
+  flex-shrink: 0;
+}
+
+
+/* =====================================================
+ RESPONSIVIDADE - TABLET
+===================================================== */
+
+@media (max-width: 1100px) {
+
+  .nav-inner {
+      gap: 10px;
+  }
+
+  .nav-links {
+      gap: 2px;
+  }
+
+  .nav-links button {
+      font-size: 13px;
+
+      padding: 7px 8px;
+  }
+
+  .login-btn {
+      padding: 8px 12px;
+  }
+}
+
+
+/* =====================================================
+ RESPONSIVIDADE - ATÉ 900PX
+===================================================== */
+
+@media (max-width: 900px) {
+
+  /*
+     A barra deixa de ser fixed.
+     Isso impede que ela fique sobre a navegação.
+  */
+
+  .safety-bar {
+      position: relative;
+
+      width: 100%;
+  }
+
+
+  /*
+     O menu também deixa de usar top:38px.
+     Ele fica logo depois da safety bar.
+  */
+
+  .mainnav {
+      position: sticky;
+
+      top: 0;
+
+      left: auto;
+      right: auto;
+
+      z-index: 999;
+  }
+
+
+  /*
+     Retira o espaço antigo que existia
+     por causa das barras fixed.
+  */
+
+  body {
+      padding-top: 0;
+  }
+
+
+  /*
+     Safety bar
+  */
+
+  .safety-inner {
+      width: 100%;
+
+      max-width: none;
+
+      padding: 10px 18px;
+
+      gap: 10px;
+  }
+
+
+  /*
+     Navegação
+  */
+
+  .nav-inner {
+      width: 100%;
+
+      max-width: none;
+
+      padding: 10px 18px;
+
+      gap: 8px;
+  }
+
+
+  /*
+     Logo fica à esquerda
+  */
+
+  .brand {
+      margin-right: auto;
+  }
+
+
+  /*
+     Mostra o hambúrguer
+  */
+
+  .menu-hamburguer {
+      display: flex;
+  }
+
+
+  /*
+     Links ficam escondidos
+     até clicar no hambúrguer.
+  */
+
+  .mainnav .nav-links {
+      display: none;
+
+      position: absolute;
+
+      top: 100%;
+
+      left: 0;
+      right: 0;
+
+      width: 100%;
+
+      flex-direction: column;
+
+      align-items: stretch;
+
+      gap: 4px;
+
+      padding: 10px;
+
+      background: var(--paper);
+
+      border-top: 1px solid var(--line);
+
+      box-shadow:
+          0 8px 20px rgba(0, 0, 0, 0.15);
+
+      z-index: 9999;
+
+      max-height: calc(100vh - 80px);
+
+      overflow-y: auto;
+  }
+
+
+  /*
+     Menu aberto
+  */
+
+  .mainnav .nav-links.menu-aberto {
+      display: flex;
+  }
+
+
+  /*
+     Botões do menu
+  */
+
+  .mainnav .nav-links > button {
+      width: 100%;
+
+      text-align: left;
+
+      padding: 13px 16px;
+
+      border-radius: 8px;
+
+      font-size: 14px;
+  }
+
+
+  /*
+     Dropdown MAIS
+  */
+
+  .mainnav .nav-links .dropdown {
+      width: 100%;
+  }
+
+
+  .mainnav .nav-links .mais-btn {
+      width: 100%;
+
+      text-align: left;
+
+      padding: 13px 16px;
+
+      border-radius: 8px;
+
+      font-size: 14px;
+  }
+
+
+  /*
+     Dropdown interno
+  */
+
+  .mainnav .nav-links .dropdown-menu {
+      position: static;
+
+      width: 100%;
+
+      margin-top: 3px;
+
+      padding: 5px;
+
+      box-shadow: none;
+
+      border-radius: 8px;
+  }
+
+
+  .mainnav .nav-links .dropdown-menu button {
+      width: 100%;
+
+      text-align: left;
+
+      padding: 11px 24px;
+  }
+
+
+  /*
+     Lado direito
+  */
+
+  .nav-right {
+      display: flex;
+
+      align-items: center;
+
+      gap: 6px;
+
+      flex-shrink: 0;
+  }
+
+
+  .icon-btn {
+      width: 40px;
+
+      height: 40px;
+  }
+
+
+  .login-btn {
+      padding: 8px 12px;
+  }
+
+
+  /*
+     Conteúdo
+  */
+
+  .hero-grid {
+      grid-template-columns: 1fr;
+  }
+
+
+  .grid-4 {
+      grid-template-columns: repeat(2, 1fr);
+  }
+
+
+  .grid-3 {
+      grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+
+/* =====================================================
+ CELULAR - ATÉ 600PX
+===================================================== */
+
+@media (max-width: 600px) {
+
+  /*
+     Barra de segurança
+  */
+
+  .safety-inner {
+      padding: 12px 14px;
+
+      flex-direction: column;
+
+      align-items: stretch;
+
+      gap: 10px;
+  }
+
+
+  .safety-msg {
+      font-size: 12px;
+
+      line-height: 1.4;
+  }
+
+
+  .safety-actions {
+      width: 100%;
+
+      display: flex;
+
+      gap: 8px;
+  }
+
+
+  .btn-exit,
+  .btn-emergency {
+      flex: 1;
+
+      padding: 10px 8px;
+
+      font-size: 12px;
+
+      justify-content: center;
+  }
+
+
+  /*
+     Navegação
+  */
+
+  .nav-inner {
+      padding: 8px 12px;
+
+      gap: 6px;
+  }
+
+
+  .brand {
+      font-size: 18px;
+  }
+
+
+  .brand-mark {
+      width: 24px;
+
+      height: 24px;
+  }
+
+
+  .menu-hamburguer {
+      width: 42px;
+
+      height: 42px;
+
+      font-size: 26px;
+  }
+
+
+  .icon-btn {
+      width: 38px;
+
+      height: 38px;
+  }
+
+
+  .login-btn {
+      padding: 7px 10px;
+
+      font-size: 12px;
+  }
+
+
+  /*
+     Conteúdo
+  */
+
+  .wrap {
+      width: calc(100% - 24px);
+
+      padding: 0 12px;
+  }
+
+
+  .grid-4,
+  .grid-3,
+  .grid-2 {
+      grid-template-columns: 1fr;
+  }
+
+
+  .hero h1 {
+      font-size: clamp(30px, 9vw, 44px);
+  }
+
+
+  .hero p.lede {
+      font-size: clamp(15px, 4vw, 17px);
+  }
+
+
+  img {
+      max-width: 100%;
+
+      height: auto;
+  }
+
+
+  .comment-form {
+      flex-direction: column;
+  }
+
+
+  .comment-form button {
+      width: 100%;
+  }
+
+
+  .map-search {
+      flex-direction: column;
+  }
+
+
+  .map-search button {
+      padding: 11px 20px;
+  }
+
+
+  .alert-box {
+      flex-direction: column;
+  }
+}
+
+
+/* =====================================================
+ CELULAR MUITO PEQUENO - ATÉ 400PX
+===================================================== */
+
+@media (max-width: 400px) {
+
+  .safety-inner {
+      padding: 10px 10px;
+  }
+
+
+  .safety-actions {
+      flex-direction: column;
+  }
+
+
+  .btn-exit,
+  .btn-emergency {
+      width: 100%;
+  }
+
+
+  .nav-inner {
+      padding-left: 8px;
+
+      padding-right: 8px;
+  }
+
+
+  .brand {
+      font-size: 17px;
+  }
+
+
+  .login-btn {
+      padding: 7px 9px;
+
+      font-size: 11px;
+  }
+
+
+  .icon-btn {
+      width: 36px;
+
+      height: 36px;
+  }
+
+
+  .menu-hamburguer {
+      width: 38px;
+
+      height: 38px;
+
+      font-size: 24px;
+  }
+}
+
+/* =========================================================
+   MENU RESPONSIVO - VOZATIVA
+   ========================================================= */
+
+/* Botão do menu mobile */
+.menu-toggle {
+  display: none;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font-size: 28px;
+  line-height: 1;
+  padding: 8px;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Mantém o menu funcionando normalmente no computador */
+.nav-links {
+  display: flex;
+  align-items: center;
+}
+
+/* =========================================================
+ TABLET / CELULAR
+ ========================================================= */
+
+@media (max-width: 900px) {
+
+  /* Barra de segurança não fica por cima do conteúdo */
+  .safety-bar {
+      position: relative !important;
+      z-index: 1000;
+  }
+
+  .safety-inner {
+      flex-wrap: wrap;
+      gap: 10px;
+  }
+
+  .safety-actions {
+      flex-wrap: wrap;
+  }
+
+  /* Navegação fica fixa no topo */
+  .mainnav {
+      position: sticky !important;
+      top: 0;
+      z-index: 999;
+  }
+
+  .nav-inner {
+      position: relative;
+  }
+
+  /* Mostra botão hambúrguer */
+  .menu-toggle {
+      display: flex;
+      order: 2;
+  }
+
+  /* Mantém marca à esquerda */
+  .brand {
+      order: 1;
+  }
+
+  /* Botões de tema/login */
+  .nav-right {
+      order: 3;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+  }
+
+  /*
+     O menu começa escondido no celular.
+     Ele será aberto pelo JavaScript.
+  */
+  .nav-links {
+      display: none !important;
+
+      position: absolute;
+      top: calc(100% + 8px);
+      left: 0;
+      right: 0;
+
+      flex-direction: column;
+      align-items: stretch;
+
+      padding: 12px;
+
+      background: var(--card, #ffffff);
+      border: 1px solid rgba(0, 0, 0, 0.12);
+      border-radius: 14px;
+
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+
+      max-height: calc(100vh - 100px);
+      overflow-y: auto;
+
+      z-index: 2000;
+  }
+
+  /* Menu aberto */
+  .nav-links.menu-aberto {
+      display: flex !important;
+  }
+
+  .nav-links > button,
+  .nav-links .dropdown > button {
+      width: 100%;
+      text-align: left;
+      padding: 13px 14px;
+      border-radius: 8px;
+  }
+
+  /* Dropdown do "Mais" */
+  .dropdown {
+      width: 100%;
+  }
+
+  .dropdown-menu {
+      position: static !important;
+      width: 100%;
+      margin-top: 5px;
+      box-shadow: none !important;
+  }
+
+  .dropdown-menu button {
+      width: 100%;
+      text-align: left;
+  }
+
+  /* Segurança */
+  .safety-msg {
+      line-height: 1.4;
+  }
+
+  /* Ajustes gerais */
+  .wrap {
+      width: 100%;
+      max-width: 100%;
+      padding-left: 16px;
+      padding-right: 16px;
+  }
+}
+
+/* =========================================================
+ CELULARES
+ ========================================================= */
+
+@media (max-width: 600px) {
+
+  .safety-inner {
+      flex-direction: column;
+      align-items: stretch;
+  }
+
+  .safety-actions {
+      display: flex;
+      width: 100%;
+      flex-direction: column;
+  }
+
+  .safety-actions button {
+      width: 100%;
+  }
+
+  .nav-inner {
+      min-height: 60px;
+  }
+
+  .brand {
+      font-size: 18px;
+  }
+
+  .nav-right .login-btn {
+      padding: 8px 10px;
+  }
+
+  .nav-right .icon-btn {
+      padding: 8px;
+  }
+
+  .menu-toggle {
+      font-size: 26px;
+  }
+
+  .page-header h2 {
+      font-size: 28px;
+      line-height: 1.15;
+  }
+
+  .page-header p {
+      font-size: 15px;
+  }
+
+  /* Mapa */
+  #map {
+      height: 350px !important;
+  }
+
+  .map-search {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+  }
+
+  .map-search input {
+      width: 100%;
+      flex: 1 1 100%;
+  }
+
+  .map-search button {
+      flex: 1;
+  }
+
+  .map-filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+  }
+
+  .map-filter {
+      flex: 1;
+      min-width: 100px;
+  }
+
+  /* Denúncias */
+  .hotline-row {
+      grid-template-columns: 1fr !important;
+  }
+
+  .form-box {
+      width: 100%;
+  }
+
+  textarea {
+      min-height: 150px;
+  }
+
+  /* Assistente */
+  .chat-section {
+      width: 100%;
+  }
+
+  .chat-mock {
+      width: 100%;
+  }
+
+  /* Notícias */
+  .grid-3 {
+      grid-template-columns: 1fr !important;
+  }
+
+  /* Modais */
+  .modal-box {
+      width: calc(100% - 30px);
+      max-height: 90vh;
+      overflow-y: auto;
+  }
+
+  footer {
+      margin-top: 30px;
+  }
+
+  .foot-grid {
+      grid-template-columns: 1fr !important;
+      gap: 20px;
+  }
 }

@@ -1,604 +1,1220 @@
 /* =========================================================
    ACESSIBILIDADE - VOZATIVA
-========================================================= */
+   ========================================================= */
 
 (function () {
 
+    "use strict";
+
+
     /* =====================================================
-       CRIAR O PAINEL
-    ===================================================== */
+       CONFIGURAÇÃO
+       ===================================================== */
 
-    function criarAcessibilidade() {
+    const STORAGE_KEY = "vozativa_acessibilidade";
 
-        /* Evita criar duas vezes */
-        if (document.getElementById("botaoAcessibilidade")) {
-            return;
+
+    let configuracao = {
+        fonte: 1,
+        leituraMouse: false,
+        leituraSelecao: true,
+        espacamento: false,
+        contraste: false,
+        movimento: false
+    };
+
+
+    /* =====================================================
+       CARREGAR CONFIGURAÇÕES
+       ===================================================== */
+
+    function carregarConfiguracao() {
+
+        try {
+
+            const salvo =
+                localStorage.getItem(STORAGE_KEY);
+
+            if (salvo) {
+
+                const dados = JSON.parse(salvo);
+
+                configuracao = {
+                    ...configuracao,
+                    ...dados
+                };
+
+            }
+
+        } catch (erro) {
+
+            console.warn(
+                "Erro ao carregar acessibilidade:",
+                erro
+            );
+
         }
 
-        /* Botão */
-        const botao = document.createElement("button");
+    }
 
-        botao.id = "botaoAcessibilidade";
-        botao.setAttribute("aria-label", "Abrir opções de acessibilidade");
-        botao.setAttribute("title", "Acessibilidade");
+
+    /* =====================================================
+       SALVAR
+       ===================================================== */
+
+    function salvarConfiguracao() {
+
+        try {
+
+            localStorage.setItem(
+                STORAGE_KEY,
+                JSON.stringify(configuracao)
+            );
+
+        } catch (erro) {
+
+            console.warn(
+                "Erro ao salvar acessibilidade:",
+                erro
+            );
+
+        }
+
+    }
+
+
+    /* =====================================================
+       BOTÃO DE ACESSIBILIDADE
+       ===================================================== */
+
+    function criarBotao() {
+
+        const botao =
+            document.createElement("button");
+
+        botao.id = "accessibilityButton";
+
+        botao.className =
+            "accessibility-button";
+
+        botao.type = "button";
+
+        botao.setAttribute(
+            "aria-label",
+            "Abrir opções de acessibilidade"
+        );
+
+        botao.setAttribute(
+            "aria-expanded",
+            "false"
+        );
 
         botao.innerHTML = "♿";
 
+
+        botao.addEventListener(
+            "click",
+            alternarPainel
+        );
+
+
         document.body.appendChild(botao);
 
+    }
 
-        /* Painel */
-        const painel = document.createElement("div");
 
-        painel.id = "acessibilidadePainel";
+    /* =====================================================
+       PAINEL
+       ===================================================== */
 
-        painel.setAttribute("aria-label", "Opções de acessibilidade");
+    function criarPainel() {
+
+        const painel =
+            document.createElement("aside");
+
+        painel.id =
+            "accessibilityPanel";
+
+        painel.className =
+            "accessibility-panel";
+
+        painel.setAttribute(
+            "aria-label",
+            "Opções de acessibilidade"
+        );
+
 
         painel.innerHTML = `
 
-            <h2>♿ Acessibilidade</h2>
+            <div class="accessibility-header">
 
-            <button
-                class="acessibilidade-opcao"
-                id="aumentarFonte">
-                🔠 Aumentar texto
-            </button>
+                <h3>Acessibilidade</h3>
 
-            <button
-                class="acessibilidade-opcao"
-                id="diminuirFonte">
-                🔡 Diminuir texto
-            </button>
+                <button
+                    type="button"
+                    class="accessibility-close"
+                    id="accessibilityClose"
+                    aria-label="Fechar acessibilidade"
+                >
+                    ×
+                </button>
 
-            <button
-                class="acessibilidade-opcao"
-                id="fonteNormal">
-                ↺ Tamanho normal
-            </button>
+            </div>
 
-            <div class="acessibilidade-separador"></div>
 
-            <button
-                class="acessibilidade-opcao"
-                id="lerSelecao">
-                🔊 Ler texto selecionado
-            </button>
+            <p class="accessibility-description">
+                Personalize a página para facilitar
+                a leitura e a navegação.
+            </p>
 
-            <button
-                class="acessibilidade-opcao"
-                id="lerMouse">
-                🖱️ Ler ao passar o mouse
-            </button>
 
-            <button
-                class="acessibilidade-opcao"
-                id="pararLeitura">
-                ⏹️ Parar leitura
-            </button>
+            <!-- TAMANHO -->
 
-            <div class="acessibilidade-separador"></div>
+            <div class="accessibility-section">
 
-            <button
-                class="acessibilidade-opcao"
-                id="altoContraste">
-                ◐ Alto contraste
-            </button>
+                <span class="accessibility-section-title">
+                    Tamanho do texto
+                </span>
 
-            <div class="acessibilidade-info">
-                Selecione um texto para ouvi-lo em voz alta.
-                Você também pode ativar a leitura ao passar
-                o mouse sobre os textos.
+
+                <div class="accessibility-font-controls">
+
+                    <button
+                        type="button"
+                        id="fontDecrease"
+                        aria-label="Diminuir texto"
+                    >
+                        A−
+                    </button>
+
+
+                    <button
+                        type="button"
+                        id="fontNormal"
+                        aria-label="Tamanho normal"
+                    >
+                        A
+                    </button>
+
+
+                    <button
+                        type="button"
+                        id="fontIncrease"
+                        aria-label="Aumentar texto"
+                    >
+                        A+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- LEITURA -->
+
+            <div class="accessibility-section">
+
+                <span class="accessibility-section-title">
+                    Leitura
+                </span>
+
+
+                <div class="accessibility-options">
+
+                    <button
+                        type="button"
+                        class="accessibility-option"
+                        id="mouseReading"
+                    >
+
+                        <span class="accessibility-icon">
+                            🔊
+                        </span>
+
+                        <span>
+                            Ler ao passar o mouse
+                        </span>
+
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="accessibility-option"
+                        id="selectionReading"
+                    >
+
+                        <span class="accessibility-icon">
+                            🖱️
+                        </span>
+
+                        <span>
+                            Ler texto selecionado
+                        </span>
+
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="accessibility-option"
+                        id="stopReading"
+                    >
+
+                        <span class="accessibility-icon">
+                            ⏹️
+                        </span>
+
+                        <span>
+                            Parar leitura
+                        </span>
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- VISUAL -->
+
+            <div class="accessibility-section">
+
+                <span class="accessibility-section-title">
+                    Visual
+                </span>
+
+
+                <div class="accessibility-options">
+
+                    <button
+                        type="button"
+                        class="accessibility-option"
+                        id="spacingButton"
+                    >
+
+                        <span class="accessibility-icon">
+                            ↔️
+                        </span>
+
+                        <span>
+                            Aumentar espaçamento
+                        </span>
+
+                    </button>
+
+                </div>
+
             </div>
 
         `;
 
+
         document.body.appendChild(painel);
 
+    }
 
-        /* =================================================
-           ABRIR / FECHAR PAINEL
-        ================================================= */
 
-        botao.addEventListener("click", function () {
+    /* =====================================================
+       INDICADOR DE LEITURA
+       ===================================================== */
 
-            painel.classList.toggle("aberto");
+    function criarIndicador() {
 
-        });
+        const indicador =
+            document.createElement("div");
 
+        indicador.id =
+            "accessibilityReading";
 
-        /* =================================================
-           AUMENTAR FONTE
-        ================================================= */
+        indicador.className =
+            "accessibility-reading";
 
-        document
-            .getElementById("aumentarFonte")
-            .addEventListener("click", function () {
+        indicador.setAttribute(
+            "aria-live",
+            "polite"
+        );
 
-                document.body.classList.remove(
-                    "acessibilidade-fonte-normal",
-                    "acessibilidade-fonte-grande"
-                );
+        indicador.textContent =
+            "🔊 Lendo...";
 
-                document.body.classList.add(
-                    "acessibilidade-fonte-maior"
-                );
 
-                localStorage.setItem(
-                    "tamanhoFonte",
-                    "maior"
-                );
-
-            });
-
-
-        /* =================================================
-           DIMINUIR FONTE
-        ================================================= */
-
-        document
-            .getElementById("diminuirFonte")
-            .addEventListener("click", function () {
-
-                document.body.classList.remove(
-                    "acessibilidade-fonte-maior",
-                    "acessibilidade-fonte-normal"
-                );
-
-                document.body.classList.add(
-                    "acessibilidade-fonte-grande"
-                );
-
-                localStorage.setItem(
-                    "tamanhoFonte",
-                    "grande"
-                );
-
-            });
-
-
-        /* =================================================
-           FONTE NORMAL
-        ================================================= */
-
-        document
-            .getElementById("fonteNormal")
-            .addEventListener("click", function () {
-
-                document.body.classList.remove(
-                    "acessibilidade-fonte-grande",
-                    "acessibilidade-fonte-maior"
-                );
-
-                document.body.classList.add(
-                    "acessibilidade-fonte-normal"
-                );
-
-                localStorage.setItem(
-                    "tamanhoFonte",
-                    "normal"
-                );
-
-            });
-
-
-        /* =================================================
-           LEITURA DE TEXTO SELECIONADO
-        ================================================= */
-
-        document
-            .getElementById("lerSelecao")
-            .addEventListener("click", function () {
-
-                lerTextoSelecionado();
-
-            });
-
-
-        /* =================================================
-           LEITURA AO PASSAR O MOUSE
-        ================================================= */
-
-        document
-            .getElementById("lerMouse")
-            .addEventListener("click", function () {
-
-                const botaoLeitura =
-                    document.getElementById("lerMouse");
-
-                const ativo =
-                    localStorage.getItem("leituraMouse") === "true";
-
-                if (ativo) {
-
-                    localStorage.setItem(
-                        "leituraMouse",
-                        "false"
-                    );
-
-                    botaoLeitura.classList.remove("ativo");
-
-                    removerLeituraMouse();
-
-                } else {
-
-                    localStorage.setItem(
-                        "leituraMouse",
-                        "true"
-                    );
-
-                    botaoLeitura.classList.add("ativo");
-
-                    ativarLeituraMouse();
-
-                }
-
-            });
-
-
-        /* =================================================
-           PARAR LEITURA
-        ================================================= */
-
-        document
-            .getElementById("pararLeitura")
-            .addEventListener("click", function () {
-
-                pararLeitura();
-
-            });
-
-
-        /* =================================================
-           ALTO CONTRASTE
-        ================================================= */
-
-        document
-            .getElementById("altoContraste")
-            .addEventListener("click", function () {
-
-                const ativo =
-                    localStorage.getItem("altoContraste") === "true";
-
-                if (ativo) {
-
-                    document.body.classList.remove(
-                        "alto-contraste"
-                    );
-
-                    localStorage.setItem(
-                        "altoContraste",
-                        "false"
-                    );
-
-                    this.classList.remove("ativo");
-
-                } else {
-
-                    document.body.classList.add(
-                        "alto-contraste"
-                    );
-
-                    localStorage.setItem(
-                        "altoContraste",
-                        "true"
-                    );
-
-                    this.classList.add("ativo");
-
-                }
-
-            });
-
-
-        /* =================================================
-           CARREGAR CONFIGURAÇÕES SALVAS
-        ================================================= */
-
-        carregarConfiguracoes();
+        document.body.appendChild(indicador);
 
     }
 
 
     /* =====================================================
-       LER TEXTO SELECIONADO
-    ===================================================== */
+       ABRIR / FECHAR
+       ===================================================== */
 
-    function lerTextoSelecionado() {
+    function alternarPainel() {
 
-        const selecao =
-            window.getSelection().toString().trim();
-
-        if (!selecao) {
-
-            alert(
-                "Selecione um texto na página para que ele seja lido."
+        const painel =
+            document.getElementById(
+                "accessibilityPanel"
             );
 
-            return;
-        }
+        const botao =
+            document.getElementById(
+                "accessibilityButton"
+            );
 
-        falar(selecao);
+
+        if (!painel) return;
+
+
+        const aberto =
+            painel.classList.toggle("open");
+
+
+        if (botao) {
+
+            botao.setAttribute(
+                "aria-expanded",
+                aberto
+                    ? "true"
+                    : "false"
+            );
+
+        }
 
     }
 
 
     /* =====================================================
-       FUNÇÃO PRINCIPAL DE VOZ
-    ===================================================== */
+       FONTE
+       ===================================================== */
+
+    function aplicarFonte() {
+
+        let escala = 1;
+
+
+        if (configuracao.fonte === 0.9) {
+
+            escala = 0.9;
+
+        } else if (configuracao.fonte === 1.15) {
+
+            escala = 1.15;
+
+        } else if (configuracao.fonte === 1.3) {
+
+            escala = 1.3;
+
+        }
+
+
+        document.documentElement.style.setProperty(
+            "--accessibility-scale",
+            escala
+        );
+
+    }
+
+
+    function diminuirFonte() {
+
+        if (configuracao.fonte === 1) {
+
+            configuracao.fonte = 0.9;
+
+        } else if (configuracao.fonte === 1.15) {
+
+            configuracao.fonte = 1;
+
+        } else if (configuracao.fonte === 1.3) {
+
+            configuracao.fonte = 1.15;
+
+        }
+
+
+        aplicarFonte();
+
+        salvarConfiguracao();
+
+    }
+
+
+    function fonteNormal() {
+
+        configuracao.fonte = 1;
+
+        aplicarFonte();
+
+        salvarConfiguracao();
+
+    }
+
+
+    function aumentarFonte() {
+
+        if (configuracao.fonte === 0.9) {
+
+            configuracao.fonte = 1;
+
+        } else if (configuracao.fonte === 1) {
+
+            configuracao.fonte = 1.15;
+
+        } else if (configuracao.fonte === 1.15) {
+
+            configuracao.fonte = 1.3;
+
+        }
+
+
+        aplicarFonte();
+
+        salvarConfiguracao();
+
+    }
+
+
+    /* =====================================================
+       LEITURA
+       ===================================================== */
 
     function falar(texto) {
 
-        if (!("speechSynthesis" in window)) {
-
-            alert(
-                "Seu navegador não oferece suporte à leitura em voz alta."
-            );
+        if (
+            !texto ||
+            !("speechSynthesis" in window)
+        ) {
 
             return;
+
         }
 
-        speechSynthesis.cancel();
+
+        texto =
+            texto
+            .replace(/\s+/g, " ")
+            .trim();
+
+
+        if (!texto) return;
+
+
+        window.speechSynthesis.cancel();
+
 
         const fala =
-            new SpeechSynthesisUtterance(texto);
+            new SpeechSynthesisUtterance(
+                texto
+            );
+
 
         fala.lang = "pt-BR";
 
-        fala.rate = 1;
+        fala.rate = 0.95;
 
         fala.pitch = 1;
 
         fala.volume = 1;
 
-        speechSynthesis.speak(fala);
+
+        const indicador =
+            document.getElementById(
+                "accessibilityReading"
+            );
+
+
+        if (indicador) {
+
+            indicador.classList.add("show");
+
+        }
+
+
+        fala.onend = function () {
+
+            if (indicador) {
+
+                indicador.classList.remove(
+                    "show"
+                );
+
+            }
+
+        };
+
+
+        fala.onerror = function () {
+
+            if (indicador) {
+
+                indicador.classList.remove(
+                    "show"
+                );
+
+            }
+
+        };
+
+
+        window.speechSynthesis.speak(
+            fala
+        );
 
     }
 
 
     /* =====================================================
        PARAR LEITURA
-    ===================================================== */
+       ===================================================== */
 
     function pararLeitura() {
 
-        if ("speechSynthesis" in window) {
-
-            speechSynthesis.cancel();
-
-        }
-
-    }
-
-
-    /* =====================================================
-       ELEMENTOS QUE PODEM SER LIDOS
-    ===================================================== */
-
-    function elementoPodeSerLido(elemento) {
-
-        if (!elemento) {
-            return false;
-        }
-
-        const tagsPermitidas = [
-            "P",
-            "H1",
-            "H2",
-            "H3",
-            "H4",
-            "H5",
-            "H6",
-            "LI",
-            "BUTTON",
-            "A",
-            "LABEL",
-            "SPAN",
-            "STRONG",
-            "B",
-            "EM",
-            "TD",
-            "TH",
-            "ARTICLE"
-        ];
-
-        if (!tagsPermitidas.includes(elemento.tagName)) {
-            return false;
-        }
-
-        /* Não ler o próprio painel de acessibilidade */
         if (
-            elemento.closest("#acessibilidadePainel") ||
-            elemento.closest("#botaoAcessibilidade")
+            "speechSynthesis" in window
         ) {
-            return false;
+
+            window.speechSynthesis.cancel();
+
         }
 
-        const texto =
-            elemento.innerText?.trim();
 
-        if (!texto) {
-            return false;
+        const indicador =
+            document.getElementById(
+                "accessibilityReading"
+            );
+
+
+        if (indicador) {
+
+            indicador.classList.remove(
+                "show"
+            );
+
         }
-
-        return true;
 
     }
 
 
     /* =====================================================
-       LEITURA AO PASSAR O MOUSE
-    ===================================================== */
+       TEXTO SELECIONADO
+       ===================================================== */
 
-    function ativarLeituraMouse() {
+    function configurarSelecao() {
 
-        if (window.acessibilidadeMouseAtiva) {
-            return;
-        }
+        document.addEventListener(
+            "mouseup",
+            function () {
 
-        window.acessibilidadeMouseAtiva = true;
+                if (
+                    !configuracao.leituraSelecao
+                ) {
+
+                    return;
+
+                }
+
+
+                const selecao =
+                    window.getSelection();
+
+
+                if (!selecao) return;
+
+
+                const texto =
+                    selecao.toString().trim();
+
+
+                if (
+                    texto.length > 0
+                ) {
+
+                    falar(texto);
+
+                }
+
+            }
+        );
+
+    }
+
+
+    /* =====================================================
+       LEITURA AO PASSAR MOUSE
+       ===================================================== */
+
+    function configurarLeituraMouse() {
 
         document.addEventListener(
             "mouseover",
-            leituraMouseHandler
-        );
+            function (event) {
 
-    }
+                if (
+                    !configuracao.leituraMouse
+                ) {
 
+                    return;
 
-    function removerLeituraMouse() {
-
-        window.acessibilidadeMouseAtiva = false;
-
-        document.removeEventListener(
-            "mouseover",
-            leituraMouseHandler
-        );
-
-    }
+                }
 
 
-    function leituraMouseHandler(event) {
+                const elemento =
+                    event.target.closest(
+                        "p, h1, h2, h3, h4, h5, h6, label, a, button, li"
+                    );
 
-        const elemento =
-            event.target.closest(
-                "p, h1, h2, h3, h4, h5, h6, li, button, a, label, span, strong, b, em, td, th, article"
-            );
 
-        if (!elemento) {
-            return;
-        }
+                if (!elemento) return;
 
-        if (!elementoPodeSerLido(elemento)) {
-            return;
-        }
 
-        /* Evita ler novamente o mesmo elemento */
-        if (
-            window.ultimoElementoLido === elemento
-        ) {
-            return;
-        }
+                if (
+                    elemento.closest(
+                        ".accessibility-panel"
+                    )
+                ) {
 
-        window.ultimoElementoLido = elemento;
+                    return;
 
-        const texto =
-            elemento.innerText.trim();
+                }
 
-        /* Limita textos gigantes */
-        if (texto.length > 500) {
-            return;
-        }
 
-        document
-            .querySelectorAll(".elemento-sendo-lido")
-            .forEach(function (item) {
+                const texto =
+                    elemento.innerText ||
+                    elemento.textContent;
 
-                item.classList.remove(
-                    "elemento-sendo-lido"
+
+                if (!texto) return;
+
+
+                falar(
+                    texto.trim()
                 );
 
-            });
-
-        elemento.classList.add(
-            "elemento-sendo-lido"
+            }
         );
-
-        falar(texto);
 
     }
 
 
     /* =====================================================
-       CONFIGURAÇÕES SALVAS
-    ===================================================== */
+       DESTAQUE
+       ===================================================== */
 
-    function carregarConfiguracoes() {
+    function configurarDestaque() {
 
-        /* Tamanho */
-        const tamanho =
-            localStorage.getItem("tamanhoFonte");
+        document.addEventListener(
+            "mouseover",
+            function (event) {
 
-        if (tamanho === "normal") {
+                if (
+                    !configuracao.leituraMouse
+                ) {
 
-            document.body.classList.add(
-                "acessibilidade-fonte-normal"
-            );
+                    return;
 
-        }
-
-        if (tamanho === "grande") {
-
-            document.body.classList.add(
-                "acessibilidade-fonte-grande"
-            );
-
-        }
-
-        if (tamanho === "maior") {
-
-            document.body.classList.add(
-                "acessibilidade-fonte-maior"
-            );
-
-        }
+                }
 
 
-        /* Alto contraste */
-        const contraste =
-            localStorage.getItem("altoContraste");
-
-        if (contraste === "true") {
-
-            document.body.classList.add(
-                "alto-contraste"
-            );
-
-            const botaoContraste =
-                document.getElementById("altoContraste");
-
-            if (botaoContraste) {
-                botaoContraste.classList.add("ativo");
-            }
-
-        }
+                const elemento =
+                    event.target.closest(
+                        "p, h1, h2, h3, h4, h5, h6, label, a, button, li"
+                    );
 
 
-        /* Leitura do mouse */
-        const leituraMouse =
-            localStorage.getItem("leituraMouse");
+                if (!elemento) return;
 
-        if (leituraMouse === "true") {
 
-            const botaoLeitura =
-                document.getElementById("lerMouse");
-
-            if (botaoLeitura) {
-
-                botaoLeitura.classList.add("ativo");
+                elemento.classList.add(
+                    "accessibility-reading-highlight"
+                );
 
             }
+        );
 
-            ativarLeituraMouse();
+
+        document.addEventListener(
+            "mouseout",
+            function (event) {
+
+                const elemento =
+                    event.target.closest(
+                        "p, h1, h2, h3, h4, h5, h6, label, a, button, li"
+                    );
+
+
+                if (!elemento) return;
+
+
+                elemento.classList.remove(
+                    "accessibility-reading-highlight"
+                );
+
+            }
+        );
+
+    }
+
+
+    /* =====================================================
+       ESPAÇAMENTO
+       ===================================================== */
+
+    function alternarEspacamento() {
+
+        configuracao.espacamento =
+            !configuracao.espacamento;
+
+
+        document.documentElement.classList.toggle(
+            "accessibility-spacing",
+            configuracao.espacamento
+        );
+
+
+        salvarConfiguracao();
+
+        atualizarBotoes();
+
+    }
+
+
+    /* =====================================================
+       CONTRASTE
+       ===================================================== */
+
+    function alternarContraste() {
+
+        configuracao.contraste =
+            !configuracao.contraste;
+
+
+        document.documentElement.classList.toggle(
+            "accessibility-contrast",
+            configuracao.contraste
+        );
+
+
+        salvarConfiguracao();
+
+        atualizarBotoes();
+
+    }
+
+
+    /* =====================================================
+       ANIMAÇÕES
+       ===================================================== */
+
+    function alternarMovimento() {
+
+        configuracao.movimento =
+            !configuracao.movimento;
+
+
+        document.documentElement.classList.toggle(
+            "accessibility-no-motion",
+            configuracao.movimento
+        );
+
+
+        salvarConfiguracao();
+
+        atualizarBotoes();
+
+    }
+
+
+    /* =====================================================
+       ATUALIZAR BOTÕES
+       ===================================================== */
+
+    function atualizarBotoes() {
+
+        const mouse =
+            document.getElementById(
+                "mouseReading"
+            );
+
+        const selection =
+            document.getElementById(
+                "selectionReading"
+            );
+
+        const spacing =
+            document.getElementById(
+                "spacingButton"
+            );
+
+        const contrast =
+            document.getElementById(
+                "contrastButton"
+            );
+
+        const motion =
+            document.getElementById(
+                "motionButton"
+            );
+
+
+        if (mouse) {
+
+            mouse.classList.toggle(
+                "active",
+                configuracao.leituraMouse
+            );
 
         }
+
+
+        if (selection) {
+
+            selection.classList.toggle(
+                "active",
+                configuracao.leituraSelecao
+            );
+
+        }
+
+
+        if (spacing) {
+
+            spacing.classList.toggle(
+                "active",
+                configuracao.espacamento
+            );
+
+        }
+
+
+        if (contrast) {
+
+            contrast.classList.toggle(
+                "active",
+                configuracao.contraste
+            );
+
+        }
+
+
+        if (motion) {
+
+            motion.classList.toggle(
+                "active",
+                configuracao.movimento
+            );
+
+        }
+
+    }
+
+
+    /* =====================================================
+       APLICAR CONFIGURAÇÕES
+       ===================================================== */
+
+    function aplicarConfiguracao() {
+
+        aplicarFonte();
+
+
+        document.documentElement.classList.toggle(
+            "accessibility-spacing",
+            configuracao.espacamento
+        );
+
+
+        document.documentElement.classList.toggle(
+            "accessibility-contrast",
+            configuracao.contraste
+        );
+
+
+        document.documentElement.classList.toggle(
+            "accessibility-no-motion",
+            configuracao.movimento
+        );
+
+    }
+
+
+    /* =====================================================
+       EVENTOS
+       ===================================================== */
+
+    function configurarEventos() {
+
+        const close =
+            document.getElementById(
+                "accessibilityClose"
+            );
+
+        const decrease =
+            document.getElementById(
+                "fontDecrease"
+            );
+
+        const normal =
+            document.getElementById(
+                "fontNormal"
+            );
+
+        const increase =
+            document.getElementById(
+                "fontIncrease"
+            );
+
+        const mouse =
+            document.getElementById(
+                "mouseReading"
+            );
+
+        const selection =
+            document.getElementById(
+                "selectionReading"
+            );
+
+        const stop =
+            document.getElementById(
+                "stopReading"
+            );
+
+        const spacing =
+            document.getElementById(
+                "spacingButton"
+            );
+
+        const contrast =
+            document.getElementById(
+                "contrastButton"
+            );
+
+        const motion =
+            document.getElementById(
+                "motionButton"
+            );
+
+
+        if (close) {
+
+            close.addEventListener(
+                "click",
+                alternarPainel
+            );
+
+        }
+
+
+        if (decrease) {
+
+            decrease.addEventListener(
+                "click",
+                diminuirFonte
+            );
+
+        }
+
+
+        if (normal) {
+
+            normal.addEventListener(
+                "click",
+                fonteNormal
+            );
+
+        }
+
+
+        if (increase) {
+
+            increase.addEventListener(
+                "click",
+                aumentarFonte
+            );
+
+        }
+
+
+        if (mouse) {
+
+            mouse.addEventListener(
+                "click",
+                function () {
+
+                    configuracao.leituraMouse =
+                        !configuracao.leituraMouse;
+
+
+                    salvarConfiguracao();
+
+                    atualizarBotoes();
+
+                }
+            );
+
+        }
+
+
+        if (selection) {
+
+            selection.addEventListener(
+                "click",
+                function () {
+
+                    configuracao.leituraSelecao =
+                        !configuracao.leituraSelecao;
+
+
+                    salvarConfiguracao();
+
+                    atualizarBotoes();
+
+                }
+            );
+
+        }
+
+
+        if (stop) {
+
+            stop.addEventListener(
+                "click",
+                pararLeitura
+            );
+
+        }
+
+
+        if (spacing) {
+
+            spacing.addEventListener(
+                "click",
+                alternarEspacamento
+            );
+
+        }
+
+
+        if (contrast) {
+
+            contrast.addEventListener(
+                "click",
+                alternarContraste
+            );
+
+        }
+
+
+        if (motion) {
+
+            motion.addEventListener(
+                "click",
+                alternarMovimento
+            );
+
+        }
+
+
+        /* ESC */
+
+        document.addEventListener(
+            "keydown",
+            function (event) {
+
+                if (
+                    event.key === "Escape"
+                ) {
+
+                    const painel =
+                        document.getElementById(
+                            "accessibilityPanel"
+                        );
+
+
+                    if (
+                        painel &&
+                        painel.classList.contains(
+                            "open"
+                        )
+                    ) {
+
+                        alternarPainel();
+
+                    }
+
+                }
+
+            }
+        );
+
+
+        /* Foco pelo teclado */
+
+        document.addEventListener(
+            "keydown",
+            function () {
+
+                document.body.classList.add(
+                    "accessibility-keyboard"
+                );
+
+            }
+        );
+
+
+        document.addEventListener(
+            "mousedown",
+            function () {
+
+                document.body.classList.remove(
+                    "accessibility-keyboard"
+                );
+
+            }
+        );
 
     }
 
 
     /* =====================================================
        INICIAR
-    ===================================================== */
+       ===================================================== */
 
-    if (document.readyState === "loading") {
+    function iniciar() {
+
+        carregarConfiguracao();
+
+        criarBotao();
+
+        criarPainel();
+
+        criarIndicador();
+
+        aplicarConfiguracao();
+
+        configurarEventos();
+
+        configurarSelecao();
+
+        configurarLeituraMouse();
+
+        configurarDestaque();
+
+        atualizarBotoes();
+
+    }
+
+
+    if (
+        document.readyState === "loading"
+    ) {
 
         document.addEventListener(
             "DOMContentLoaded",
-            criarAcessibilidade
+            iniciar
         );
 
     } else {
 
-        criarAcessibilidade();
+        iniciar();
 
     }
 

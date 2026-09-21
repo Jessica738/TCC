@@ -31,6 +31,7 @@
 
     <link rel="stylesheet" href="css/common.css">
     <link rel="stylesheet" href="css/noticias.css">
+    <link rel="stylesheet" href="css/acessibilidade.css">
 </head>
 
 
@@ -92,7 +93,7 @@
             <div class="nav-right">
                 <button class="icon-btn" id="themeBtn" type="button" onclick="toggleTheme()" aria-label="Alternar modo escuro">◐</button>
                 <button class="login-btn" type="button" onclick="openLogin()">Entrar</button>
-            </div>
+            </div> 
 
         </div>
     </nav>
@@ -108,7 +109,7 @@
                 <h2>Acompanhamento e cobertura</h2>
                 <p>
                     Reportagens e atualizações relacionadas ao enfrentamento à violência
-                    contra a mulher. (Conteúdo de exemplo — lorem ipsum.)
+                    contra a mulher.
                 </p>
             </div>
 
@@ -126,7 +127,7 @@
         <div class="wrap foot-grid">
             <div>
                 © VozAtiva — protótipo acadêmico (TCC).
-                Nenhuma informação enviada por este site é armazenada de verdade.
+                
             </div>
             <div class="social-links">
                 <span>Instagram</span>
@@ -185,9 +186,33 @@
         </div>
     </div>
 
+    <!-- =====================================================
+     VLIBRAS
+===================================================== -->
+
+<div vw class="enabled">
+
+    <div vw-access-button class="active"></div>
+
+    <div vw-plugin-wrapper>
+
+        <div class="vw-plugin-top-wrapper"></div>
+
+    </div>
+
+</div>
+
+<script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+
+<script>
+    new window.VLibras.Widget(
+        "https://vlibras.gov.br/app"
+    );
+</script>
 
     <script src="js/common.js"></script>
     <script src="js/noticias.js"></script>
+    <script src="js/acessibilidade.js"></script>
 
 </body>
 

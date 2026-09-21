@@ -1,97 +1,204 @@
-const EXTERNAL_PAGES = {
-    noticias: 'noticias.html',
-    denuncias: 'denuncias.html',
-    mapa: 'mapa.html',
-    chat: 'assistente.html'
-};
+/* =========================================================
+   VOZATIVA - JAVASCRIPT GERAL
+   ========================================================= */
 
-function navigateTo(page) {
 
-    const current = document.body.dataset.page || 'home';
+/* =========================================================
+   NAVEGAÇÃO ENTRE PÁGINAS E SEÇÕES
+   ========================================================= */
 
-    if (EXTERNAL_PAGES[page]) {
+   function navigateTo(page) {
 
-        if (current !== page) {
-            window.location.replace(EXTERNAL_PAGES[page]);
-        }
+    /* Páginas que possuem arquivo próprio */
+    var paginasExternas = {
+        noticias: "noticias.html",
+        denuncias: "denuncias.html",
+        mapa: "mapa.html",
+        chat: "assistente.html"
+    };
 
-        closeMoreMenu();
+    /* Seções que ficam dentro do index.html */
+    var secoesHome = {
+        home: "page-home",
+        ajuda: "page-ajuda",
+        psicologico: "page-psicologico",
+        faq: "page-faq",
+        historias: "page-historias",
+        contatos: "page-contatos",
+        materiais: "page-materiais",
+        estatisticas: "page-estatisticas",
+        campanhas: "page-campanhas"
+    };
+
+
+    /* ---------------------------------------------------------
+       PÁGINAS EXTERNAS
+       --------------------------------------------------------- */
+
+    if (paginasExternas[page]) {
+
+        fecharMenuMobile();
+
+        /*
+         * replace() substitui a página atual
+         * e não cria uma nova entrada no histórico.
+         */
+        window.location.replace(paginasExternas[page]);
+
         return;
     }
 
-    if (page === 'home') {
 
-        if (current === 'home') {
-            go('home');
-        } else {
-            window.location.replace('index.html');
+    /* ---------------------------------------------------------
+       SEÇÕES DO INDEX
+       --------------------------------------------------------- */
+
+    if (secoesHome[page]) {
+
+        var secaoId = secoesHome[page];
+
+        /*
+         * Se já estamos no index.html,
+         * mostra a seção diretamente.
+         */
+        var secaoExiste = document.getElementById(secaoId);
+
+        if (secaoExiste) {
+
+            mostrarSecao(secaoId);
+
+            fecharMenuMobile();
+
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth"
+            });
+
+            return;
         }
 
-        closeMoreMenu();
+
+        /*
+         * Se estamos em outra página,
+         * salva qual seção deve aparecer
+         * quando o index.html abrir.
+         */
+        sessionStorage.setItem(
+            "vozativa_secao",
+            secaoId
+        );
+
+        fecharMenuMobile();
+
+        /*
+         * replace() para não adicionar ao histórico.
+         */
+        window.location.replace("index.html");
+
         return;
     }
 
-    if (current === 'home') {
-        go(page);
-    } else {
-        window.location.replace('index.html#' + page);
-    }
 
-    closeMoreMenu();
+    /* ---------------------------------------------------------
+       CASO NÃO ENCONTRE A PÁGINA
+       --------------------------------------------------------- */
+
+    console.warn("Página não encontrada:", page);
+
+    fecharMenuMobile();
 }
 
 
-function go(page) {
+/* =========================================================
+   MOSTRAR UMA SEÇÃO DO INDEX
+   ========================================================= */
 
-    const pages = document.querySelectorAll('.page');
+function mostrarSecao(secaoId) {
 
-    pages.forEach(function (p) {
-        p.classList.add('hidden');
+    /*
+     * Pega todas as seções que possuem a classe .page
+     */
+    var secoes = document.querySelectorAll("main .page");
+
+
+    /*
+     * Esconde todas
+     */
+    secoes.forEach(function (secao) {
+        secao.classList.add("hidden");
     });
 
-    const targetPage = document.getElementById('page-' + page);
 
-    if (targetPage) {
-        targetPage.classList.remove('hidden');
+    /*
+     * Mostra somente a escolhida
+     */
+    var secao = document.getElementById(secaoId);
+
+    if (secao) {
+
+        secao.classList.remove("hidden");
+
+    } else {
+
+        console.warn(
+            "A seção não foi encontrada:",
+            secaoId
+        );
     }
+}
 
-    document
-        .querySelectorAll('.nav-links button[data-page]')
-        .forEach(function (button) {
 
-            button.classList.toggle(
-                'active',
-                button.dataset.page === page
-            );
+/* =========================================================
+   ABRIR SEÇÃO SALVA AO CARREGAR O INDEX
+   ========================================================= */
 
+function carregarSecaoSalva() {
+
+    var secaoSalva = sessionStorage.getItem(
+        "vozativa_secao"
+    );
+
+
+    if (secaoSalva) {
+
+        /*
+         * Remove primeiro para não abrir novamente
+         * em um próximo acesso ao index.
+         */
+        sessionStorage.removeItem(
+            "vozativa_secao"
+        );
+
+
+        mostrarSecao(secaoSalva);
+
+
+        window.scrollTo({
+            top: 0,
+            behavior: "auto"
         });
 
-    closeMoreMenu();
-
-    window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
-    });
-}
-
-
-document.addEventListener('DOMContentLoaded', function () {
-
-    if (document.body.dataset.page === 'home') {
-
-        const hash = window.location.hash.replace('#', '');
-
-        if (hash) {
-            go(hash);
-        }
+        return;
     }
 
-});
+
+    /*
+     * Se nenhuma seção foi escolhida,
+     * mostra a página inicial.
+     */
+    var home = document.getElementById("page-home");
+
+    if (home) {
+
+        mostrarSecao("page-home");
+
+    }
+}
 
 
 /* =========================================================
    MENU "MAIS"
-========================================================= */
+   ========================================================= */
 
 function toggleMore(event) {
 
@@ -99,429 +206,495 @@ function toggleMore(event) {
         event.stopPropagation();
     }
 
-    const menu = document.getElementById('moreMenu');
+    var menu = document.getElementById("moreMenu");
 
     if (!menu) {
         return;
     }
 
-    menu.classList.toggle('hidden');
+    menu.classList.toggle("hidden");
 }
 
 
-function closeMoreMenu() {
+/* Fecha o menu "Mais" quando clicar fora */
+document.addEventListener("click", function (event) {
 
-    const menu = document.getElementById('moreMenu');
+    var dropdown = document.querySelector(".dropdown");
 
-    if (menu) {
-        menu.classList.add('hidden');
+    var menu = document.getElementById("moreMenu");
+
+    if (!dropdown || !menu) {
+        return;
     }
-}
 
 
-document.addEventListener('click', function () {
-    closeMoreMenu();
+    if (!dropdown.contains(event.target)) {
+
+        menu.classList.add("hidden");
+
+    }
+
 });
 
 
 /* =========================================================
-   DESTACAR BOTÃO ATIVO
-========================================================= */
+   MENU HAMBÚRGUER
+   ========================================================= */
 
-function highlightMainNav() {
+function toggleMobileMenu() {
 
-    const current =
-        document.body.dataset.page || 'home';
+    var navLinks = document.getElementById("navLinks");
 
-    document
-        .querySelectorAll('.nav-links > [data-page]')
-        .forEach(function (button) {
+    var menuToggle = document.getElementById("menuToggle");
 
-            button.classList.toggle(
-                'active',
-                button.dataset.page === current
-            );
-
-        });
-}
-
-
-document.addEventListener(
-    'DOMContentLoaded',
-    highlightMainNav
-);
-
-
-/* =========================================================
-   SAÍDA RÁPIDA
-========================================================= */
-
-const EXIT_URL =
-    'https://www.google.com/search?q=previsão+do+tempo';
-
-const EXIT_SIGNAL_KEY =
-    'vozativa-quick-exit';
-
-let exitChannel = null;
-
-
-try {
-
-    if ('BroadcastChannel' in window) {
-
-        exitChannel =
-            new BroadcastChannel(
-                'vozativa-quick-exit'
-            );
-
-        exitChannel.onmessage = function (event) {
-
-            if (event.data === 'exit') {
-                leaveNow();
-            }
-
-        };
-
+    if (!navLinks || !menuToggle) {
+        return;
     }
 
-} catch (e) {
 
-    exitChannel = null;
-
-}
+    navLinks.classList.toggle("menu-aberto");
 
 
-function leaveNow() {
+    if (navLinks.classList.contains("menu-aberto")) {
 
-    window.location.replace(EXIT_URL);
-
-}
-
-
-function quickExit() {
-
-    try {
-
-        if (exitChannel) {
-
-            exitChannel.postMessage('exit');
-
-        } else if (window.localStorage) {
-
-            localStorage.setItem(
-                EXIT_SIGNAL_KEY,
-                String(Date.now())
-            );
-
-        }
-
-    } catch (e) {
-        // Continua mesmo se houver erro
-    }
-
-    leaveNow();
-}
-
-
-window.addEventListener(
-    'storage',
-    function (event) {
-
-        if (
-            event.key === EXIT_SIGNAL_KEY &&
-            event.newValue
-        ) {
-
-            leaveNow();
-
-        }
-
-    }
-);
-
-
-/* =========================================================
-   ESC = SAÍDA RÁPIDA
-========================================================= */
-
-document.addEventListener(
-    'keydown',
-    function (event) {
-
-        const activeElement =
-            document.activeElement;
-
-        const isTyping =
-            activeElement &&
-            (
-                activeElement.tagName === 'INPUT' ||
-                activeElement.tagName === 'TEXTAREA' ||
-                activeElement.isContentEditable
-            );
-
-        if (
-            event.key === 'Escape' &&
-            !isTyping
-        ) {
-
-            quickExit();
-
-        }
-
-    }
-);
-
-
-/* =========================================================
-   MODAIS
-========================================================= */
-
-function openEmergency() {
-
-    const modal =
-        document.getElementById(
-            'emergencyModal'
+        menuToggle.innerHTML = "✕";
+        menuToggle.setAttribute(
+            "aria-label",
+            "Fechar menu"
         );
 
-    if (modal) {
-        modal.classList.remove('hidden');
-    }
+    } else {
 
-}
-
-
-function openLogin() {
-
-    const modal =
-        document.getElementById(
-            'loginModal'
+        menuToggle.innerHTML = "☰";
+        menuToggle.setAttribute(
+            "aria-label",
+            "Abrir menu"
         );
 
-    if (modal) {
-        modal.classList.remove('hidden');
-    }
+        var moreMenu = document.getElementById("moreMenu");
 
-}
-
-
-function closeModal(id) {
-
-    const modal =
-        document.getElementById(id);
-
-    if (modal) {
-        modal.classList.add('hidden');
-    }
-
-}
-
-
-document.addEventListener(
-    'click',
-    function (event) {
-
-        if (
-            !event.target.classList.contains(
-                'modal-overlay'
-            )
-        ) {
-
-            return;
-
+        if (moreMenu) {
+            moreMenu.classList.add("hidden");
         }
+    }
+}
 
-        event.target.classList.add('hidden');
+
+/* =========================================================
+   FECHAR MENU MOBILE
+   ========================================================= */
+
+function fecharMenuMobile() {
+
+    var navLinks = document.getElementById("navLinks");
+
+    var menuToggle = document.getElementById("menuToggle");
+
+    var moreMenu = document.getElementById("moreMenu");
+
+
+    if (navLinks) {
+
+        navLinks.classList.remove("menu-aberto");
 
     }
-);
+
+
+    if (menuToggle) {
+
+        menuToggle.innerHTML = "☰";
+
+        menuToggle.setAttribute(
+            "aria-label",
+            "Abrir menu"
+        );
+
+    }
+
+
+    if (moreMenu) {
+
+        moreMenu.classList.add("hidden");
+
+    }
+}
+
+
+/* =========================================================
+   ESC FECHA MENU MOBILE
+   ========================================================= */
+
+document.addEventListener("keydown", function (event) {
+
+    if (event.key !== "Escape") {
+        return;
+    }
+
+
+    var navLinks = document.getElementById("navLinks");
+
+    if (
+        navLinks &&
+        navLinks.classList.contains("menu-aberto")
+    ) {
+
+        fecharMenuMobile();
+
+    }
+
+});
+
+
+/* =========================================================
+   CRIAR BOTÃO DO MENU MOBILE
+   ========================================================= */
+
+function criarBotaoMenuMobile() {
+
+    /*
+     * Não cria outro botão se já existir.
+     */
+    if (document.getElementById("menuToggle")) {
+        return;
+    }
+
+
+    var navRight = document.querySelector(".nav-right");
+
+    var navLinks = document.getElementById("navLinks");
+
+
+    if (!navRight || !navLinks) {
+        return;
+    }
+
+
+    var botao = document.createElement("button");
+
+    botao.type = "button";
+
+    botao.id = "menuToggle";
+
+    botao.className = "menu-toggle";
+
+    botao.innerHTML = "☰";
+
+    botao.setAttribute(
+        "aria-label",
+        "Abrir menu"
+    );
+
+
+    botao.addEventListener(
+        "click",
+        toggleMobileMenu
+    );
+
+
+    navRight.insertBefore(
+        botao,
+        navRight.firstChild
+    );
+}
+
+
+/* =========================================================
+   FECHAR MENU AO REDIMENSIONAR
+   ========================================================= */
+
+window.addEventListener("resize", function () {
+
+    if (window.innerWidth > 900) {
+
+        fecharMenuMobile();
+
+    }
+
+});
 
 
 /* =========================================================
    TEMA CLARO / ESCURO
-========================================================= */
+   ========================================================= */
+
+function aplicarTema() {
+
+    var tema = localStorage.getItem("theme");
+
+
+    if (tema !== "dark" && tema !== "light") {
+
+        tema = "light";
+
+    }
+
+
+    document.documentElement.setAttribute(
+        "data-theme",
+        tema
+    );
+
+
+    document.body.setAttribute(
+        "data-theme",
+        tema
+    );
+}
+
 
 function toggleTheme() {
 
-    const html =
-        document.documentElement;
-
-    const themeButton =
-        document.getElementById(
-            'themeBtn'
+    var temaAtual =
+        document.documentElement.getAttribute(
+            "data-theme"
         );
 
-    if (!html) {
+
+    var novoTema =
+        temaAtual === "dark"
+            ? "light"
+            : "dark";
+
+
+    localStorage.setItem(
+        "theme",
+        novoTema
+    );
+
+
+    aplicarTema();
+}
+
+
+/* =========================================================
+   MARCAR BOTÃO DA PÁGINA ATUAL
+   ========================================================= */
+
+function marcarPaginaAtual() {
+
+    var paginaAtual =
+        document.body.dataset.page;
+
+
+    if (!paginaAtual) {
         return;
     }
 
-    const isDark =
-        html.getAttribute('data-theme') === 'dark';
 
-    const newTheme =
-        isDark ? 'light' : 'dark';
+    var botoes =
+        document.querySelectorAll(
+            ".nav-links button[data-page]"
+        );
 
-    html.setAttribute(
-        'data-theme',
-        newTheme
-    );
 
-    if (themeButton) {
+    botoes.forEach(function (botao) {
 
-        themeButton.textContent =
-            newTheme === 'dark'
-                ? '◑'
-                : '◐';
+        botao.classList.remove("active");
 
-    }
 
-    localStorage.setItem(
-        'theme',
-        newTheme
-    );
+        if (
+            botao.dataset.page === paginaAtual
+        ) {
 
+            botao.classList.add("active");
+
+        }
+
+    });
 }
 
 
-document.addEventListener(
-    'DOMContentLoaded',
-    function () {
+/* =========================================================
+   SAÍDA RÁPIDA
+   ========================================================= */
 
-        const savedTheme =
-            localStorage.getItem('theme');
+function quickExit() {
 
-        const html =
-            document.documentElement;
-
-        const themeButton =
-            document.getElementById(
-                'themeBtn'
-            );
-
-        if (!savedTheme) {
-            return;
-        }
-
-        html.setAttribute(
-            'data-theme',
-            savedTheme
-        );
-
-        if (themeButton) {
-
-            themeButton.textContent =
-                savedTheme === 'dark'
-                    ? '◑'
-                    : '◐';
-
-        }
-
-    }
-);
+    /*
+     * replace() impede que a página atual
+     * fique como página anterior no histórico.
+     */
+    window.location.replace(
+        "https://www.google.com/"
+    );
+}
 
 
 /* =========================================================
-   LOGIN E CADASTRO
-========================================================= */
+   ESC - SAÍDA RÁPIDA
+   ========================================================= */
 
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("keydown", function (event) {
 
-    const btnMostrarCadastro =
-        document.getElementById("btnMostrarCadastro");
-
-    const btnMostrarLogin =
-        document.getElementById("btnMostrarLogin");
-
-    const telaLogin =
-        document.getElementById("telaLogin");
-
-    const telaCadastro =
-        document.getElementById("telaCadastro");
+    if (event.key !== "Escape") {
+        return;
+    }
 
 
-    /* =====================================================
-       BOTÃO CADASTRE-SE
-    ===================================================== */
-
-    btnMostrarCadastro.addEventListener("click", function () {
-
-        telaLogin.classList.add("hidden");
-
-        telaCadastro.classList.remove("hidden");
-
-    });
+    var navLinks =
+        document.getElementById("navLinks");
 
 
-    /* =====================================================
-       BOTÃO ENTRAR DA TELA DE CADASTRO
-    ===================================================== */
+    /*
+     * Se o menu estiver aberto,
+     * o primeiro ESC apenas fecha o menu.
+     */
+    if (
+        navLinks &&
+        navLinks.classList.contains("menu-aberto")
+    ) {
 
-    btnMostrarLogin.addEventListener("click", function () {
+        return;
+    }
 
-        telaCadastro.classList.add("hidden");
 
-        telaLogin.classList.remove("hidden");
-
-    });
+    quickExit();
 
 });
 
+
 /* =========================================================
-   CADASTRO
-========================================================= */
+   MODAL DE EMERGÊNCIA
+   ========================================================= */
 
-const btnCadastrar =
-    document.getElementById("btnCadastrar");
+function openEmergency() {
 
-
-if (btnCadastrar) {
-
-    btnCadastrar.addEventListener("click", function () {
-
-        const nome =
-            document.getElementById("cadastroNome").value.trim();
-
-        const email =
-            document.getElementById("cadastroEmail").value.trim();
-
-        const senha =
-            document.getElementById("cadastroSenha").value;
-
-        const confirmacao =
-            document.getElementById("cadastroSenhaConfirmacao").value;
+    var modal =
+        document.getElementById(
+            "emergencyModal"
+        );
 
 
-        /* Verificar se está tudo preenchido */
+    if (modal) {
 
-        if (!nome || !email || !senha || !confirmacao) {
+        modal.classList.add("open");
 
-            alert("Preencha todos os campos.");
-
-            return;
-        }
-
-
-        /* Verificar se as senhas são iguais */
-
-        if (senha !== confirmacao) {
-
-            alert("As senhas não são iguais.");
-
-            return;
-        }
-
-
-        /* Verificar tamanho da senha */
-
-        if (senha.length < 6) {
-
-            alert("A senha precisa ter pelo menos 6 caracteres.");
-
-            return;
-        }
-
-
-        alert("Cadastro realizado com sucesso!");
-
-    });
-
+    }
 }
+
+
+function closeEmergency() {
+
+    var modal =
+        document.getElementById(
+            "emergencyModal"
+        );
+
+
+    if (modal) {
+
+        modal.classList.remove("open");
+
+    }
+}
+
+
+/* Fecha emergência clicando fora */
+document.addEventListener("click", function (event) {
+
+    var modal =
+        document.getElementById(
+            "emergencyModal"
+        );
+
+
+    if (!modal) {
+        return;
+    }
+
+
+    if (
+        event.target === modal
+    ) {
+
+        closeEmergency();
+
+    }
+
+});
+
+
+/* =========================================================
+   LOGIN
+   ========================================================= */
+
+function openLogin() {
+
+    var modal =
+        document.getElementById(
+            "loginModal"
+        );
+
+
+    if (modal) {
+
+        modal.classList.add("open");
+
+    }
+}
+
+
+/* =========================================================
+   ESC PARA FECHAR MODAIS
+   ========================================================= */
+
+document.addEventListener("keydown", function (event) {
+
+    if (event.key !== "Escape") {
+        return;
+    }
+
+
+    closeEmergency();
+
+
+    var loginModal =
+        document.getElementById(
+            "loginModal"
+        );
+
+
+    if (loginModal) {
+
+        loginModal.classList.remove("open");
+
+    }
+
+});
+
+
+/* =========================================================
+   CARREGAMENTO INICIAL
+   ========================================================= */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        /*
+         * Aplica o tema salvo.
+         */
+        aplicarTema();
+
+
+        /*
+         * Marca o botão correspondente
+         * à página atual.
+         */
+        marcarPaginaAtual();
+
+
+        /*
+         * Cria o botão do menu hambúrguer.
+         */
+        criarBotaoMenuMobile();
+
+
+        /*
+         * Abre a seção correta do index,
+         * caso tenha vindo de outra página.
+         */
+        carregarSecaoSalva();
+
+    }
+);
