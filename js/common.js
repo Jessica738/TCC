@@ -515,7 +515,7 @@ function quickExit() {
      * fique como página anterior no histórico.
      */
     window.location.replace(
-        "https://www.google.com/"
+        "https://www.google.com/search?q=tempo&oq=tempo&gs_lcrp=EgZjaHJvbWUyBggAEEUYOTINCAEQABiSAxiABBiKBTINCAIQABiSAxiABBiKBTINCAMQABiDARixAxiABDIKCAQQABixAxiABDINCAUQABiDARixAxiABDINCAYQABiDARixAxiABDINCAcQABiDARixAxiABDINCAgQABiDARixAxiABDIHCAkQABiPAtIBCDIzMDdqMGo3qAIAsAIA&sourceid=chrome&source=chrome.ob&ie=UTF-8&safe=active&ssui=on"
     );
 }
 

@@ -120,28 +120,28 @@ const stories = [
 
   {
       q:
-          "“Lorem ipsum dolor sit amet, consectetur adipiscing elit. Hoje eu sei que pedir ajuda foi o começo de tudo.”",
+          "“O isolamento começou aos poucos, até que me vi sem amigos e sem controle da minha própria vida. O ponto de virada foi quando liguei para o Ligue 180 em um momento de desespero. O acolhimento que recebi no centro de referência me deu as forças que eu nem sabia que tinha para recomeçar do zero.”",
 
       who:
-          "— Relato fictício, 34 anos"
+          "História de superação de Maria (32 anos)"
   },
 
 
   {
       q:
-          "“Sed do eiusmod tempor incididunt ut labore. Encontrei apoio onde menos esperava.”",
+          "“Eu achava que as agressões verbais eram normais e que a culpa era minha. Quando participei de um grupo de apoio no meu bairro, percebi que não estava sozinha. Encontrar outras mulheres que passaram pelo mesmo me deu a coragem necessária para sair daquele ciclo..”",
 
       who:
-          "— Relato fictício, 28 anos"
+          "História de superação de Ana (29 anos)"
   },
 
 
   {
       q:
-          "“Ut enim ad minim veniam, quis nostrud exercitation. Hoje ajudo outras mulheres a encontrar esse caminho.”",
+          "“Foram anos de medo silencioso dentro de casa, mas o apoio da minha família e a orientação jurídica gratuita mudaram tudo. Hoje, com a medida protetiva e minha independência financeira recuperada, uso a minha voz para mostrar a outras mulheres que existe um caminho de volta.”",
 
       who:
-          "— Relato fictício, 41 anos"
+          "História de superação de Carla (45 anos)"
   }
 
 ];

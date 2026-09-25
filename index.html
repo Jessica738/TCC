@@ -4,20 +4,8 @@
 <head>
     <meta charset="UTF-8">
 
-    <!-- Aplica o tema salvo ANTES da página desenhar qualquer coisa,
-         para não "piscar" no modo claro ao trocar de página. -->
-    <script>
-        (function () {
-            try {
-                var tema = localStorage.getItem('theme');
-                if (tema === 'dark' || tema === 'light') {
-                    document.documentElement.setAttribute('data-theme', tema);
-                }
-            } catch (e) {}
-        })();
-    </script>
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
 
     <title>VozAtiva — Rede de apoio contra a violência à mulher</title>
 
@@ -32,6 +20,20 @@
     <link rel="stylesheet" href="css/common.css">
     <link rel="stylesheet" href="css/index.css">
     <link rel="stylesheet" href="css/acessibilidade.css">
+
+    
+    <!-- Aplica o tema salvo ANTES da página desenhar qualquer coisa,
+         para não "piscar" no modo claro ao trocar de página. -->
+         <script>
+            (function () {
+                try {
+                    var tema = localStorage.getItem('theme');
+                    if (tema === 'dark' || tema === 'light') {
+                        document.documentElement.setAttribute('data-theme', tema);
+                    }
+                } catch (e) {}
+            })();
+        </script>
 </head>
 
 
@@ -327,7 +329,6 @@
         <section id="page-psicologico" class="page hidden">
 
             <div class="page-header">
-                <span class="eyebrow"> Apoio psicológico</span>
                 <h2>Cuidar da saúde emocional também é parte do caminho</h2>
                 <p>
                     Sair de uma situação de violência costuma envolver medo, culpa e
@@ -367,7 +368,6 @@
         <section id="page-faq" class="page hidden">
 
             <div class="page-header">
-                <span class="eyebrow">❓ Perguntas frequentes</span>
                 <h2>Dúvidas comuns</h2>
             </div>
 
@@ -380,9 +380,7 @@
         <section id="page-historias" class="page hidden">
 
             <div class="page-header">
-                <span class="eyebrow">📖 Histórias de superação</span>
-                <h2>Vozes de quem passou por isso</h2>
-                <p>Relatos fictícios, usados apenas como exemplo de conteúdo para o protótipo.</p>
+                <h2>Vozes de quem passou por isso:</h2>
             </div>
 
             <div class="grid grid-3 page-grid" id="storiesGrid"></div>
@@ -394,7 +392,6 @@
         <section id="page-contatos" class="page hidden">
 
             <div class="page-header">
-                <span class="eyebrow">📞 Contatos úteis</span>
                 <h2>Canais de apoio</h2>
             </div>
 
@@ -439,7 +436,6 @@
         <section id="page-materiais" class="page hidden">
         
             <div class="page-header">
-                <span class="eyebrow">📄 Materiais educativos</span>
                 <h2>Cartilhas e guias</h2>
                 <p>Materiais de apoio para entender direitos, redes de proteção e rotas de fuga seguras.</p>
             </div>
@@ -529,7 +525,6 @@
         <section id="page-estatisticas" class="page hidden">
 
             <div class="page-header">
-                <span class="eyebrow">📈 Estatísticas</span>
                 <h2>O cenário em números</h2>
                 <p>Números ilustrativos para fins de protótipo — substituir por dados oficiais na versão final.</p>
             </div>
@@ -566,7 +561,6 @@
         <section id="page-campanhas" class="page hidden">
 
             <div class="page-header">
-                <span class="eyebrow">📢 Campanhas</span>
                 <h2>Mobilização e conscientização</h2>
             </div>
 
