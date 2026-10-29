@@ -618,19 +618,8 @@ document.addEventListener("click", function (event) {
    LOGIN
    ========================================================= */
 
-function openLogin() {
-
-    var modal =
-        document.getElementById(
-            "loginModal"
-        );
-
-
-    if (modal) {
-
-        modal.classList.add("open");
-
-    }
+   function openLogin() {
+    window.location.href = "entrar.html";
 }
 
 
