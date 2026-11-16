@@ -617,7 +617,6 @@ document.addEventListener("click", function (event) {
 /* =========================================================
    LOGIN
    ========================================================= */
-
    function openLogin() {
     window.location.href = "entrar.html";
 }

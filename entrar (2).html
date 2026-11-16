@@ -1,0 +1,290 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Entrar | VozAtiva</title>
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="entrar.css">
+
+    <script src="js/common.js" defer></script>
+    <!-- ATUALIZAÇÃO 16/11: lista fictícia auxiliar para uso direto via index.html -->
+    <script src="dados/usuarios-exemplo.js" defer></script>
+    <script src="entrar.js" defer></script>
+</head>
+
+<body data-page="entrar">
+
+        <!-- BARRA DE SEGURANÇA -->
+        <div class="safety-bar">
+            <div class="safety-inner">
+                <span class="safety-msg">
+                    Este site pode ser fechado a qualquer momento —
+                    sua navegação não fica salva no histórico local.
+                </span>
+                <div class="safety-actions">
+                    <button class="btn-exit" type="button" onclick="quickExit()">
+                        ↗ Saída rápida
+                        <span class="shortcut">(ESC)</span>
+                    </button>
+                    <button class="btn-emergency" type="button" onclick="openEmergency()" style="background-color: red;">
+                        ⛑ Preciso de ajuda agora
+                    </button>
+                </div>
+            </div>
+        </div>
+    
+    <!-- NAVEGAÇÃO -->
+    <nav class="mainnav">
+        <div class="nav-inner">
+    
+            <div class="brand">
+                <span class="brand-mark"></span>
+                VozAtiva
+            </div>
+    
+            <!-- LINKS DO MENU -->
+            <div class="nav-links" id="navLinks">
+    
+                <button type="button" data-page="home" onclick="navigateTo('home')">
+                    Início
+                </button>
+    
+                <button type="button" data-page="noticias" onclick="navigateTo('noticias')">
+                    Notícias
+                </button>
+    
+                <button type="button" data-page="denuncias" onclick="navigateTo('denuncias')">
+                    Denúncias
+                </button>
+    
+                <button type="button" data-page="ajuda" onclick="navigateTo('ajuda')">
+                    Onde buscar ajuda
+                </button>
+    
+                <button type="button" data-page="mapa" onclick="navigateTo('mapa')">
+                    Mapa
+                </button>
+    
+                <button type="button" data-page="chat" onclick="navigateTo('chat')">
+                    Assistente
+                </button>
+    
+                <!-- MAIS -->
+                <div class="dropdown">
+    
+                    <button
+                        type="button"
+                        class="mais-btn"
+                        onclick="toggleMore(event)"
+                    >
+                        Mais ▾
+                    </button>
+    
+                    <div class="dropdown-menu hidden" id="moreMenu">
+    
+                        <button
+                            type="button"
+                            data-page="psicologico"
+                            onclick="navigateTo('psicologico')"
+                        >
+                            Apoio psicológico
+                        </button>
+    
+                        <button
+                            type="button"
+                            data-page="faq"
+                            onclick="navigateTo('faq')"
+                        >
+                            Perguntas frequentes
+                        </button>
+    
+                        <button
+                            type="button"
+                            data-page="historias"
+                            onclick="navigateTo('historias')"
+                        >
+                            Histórias de superação
+                        </button>
+    
+                        <button
+                            type="button"
+                            data-page="contatos"
+                            onclick="navigateTo('contatos')"
+                        >
+                            Contatos úteis
+                        </button>
+    
+                        <button
+                            type="button"
+                            data-page="materiais"
+                            onclick="navigateTo('materiais')"
+                        >
+                            Materiais educativos
+                        </button>
+    
+                        <button
+                            type="button"
+                            data-page="estatisticas"
+                            onclick="navigateTo('estatisticas')"
+                        >
+                            Estatísticas
+                        </button>
+    
+                        <button
+                            type="button"
+                            data-page="campanhas"
+                            onclick="navigateTo('campanhas')"
+                        >
+                            Campanhas
+                        </button>
+    
+                    </div>
+                </div>
+    
+            </div>
+    
+            <!-- LADO DIREITO -->
+            <div class="nav-right">
+    
+                <button
+                    class="icon-btn"
+                    id="themeBtn"
+                    type="button"
+                    onclick="toggleTheme()"
+                    aria-label="Alternar modo escuro"
+                >
+                    ◐
+                </button>
+    
+                <button
+                    class="login-btn"
+                    type="button"
+                    onclick="openLogin()"
+                >
+                    Entrar
+                </button>
+    
+            </div>
+    
+        </div>
+    </nav>
+    
+
+    <main class="login-page">
+
+        <section class="login-card">
+
+            <a href="index.html" class="voltar">
+                ← Voltar para o início
+            </a>
+            
+            <center>
+                <div class="login-logo">
+                    <h1 id="formTitulo">Boas-vindas!</h1>
+                </div>
+                    <p id="formDescricao">
+                        Entre na sua conta para continuar.
+                    </p>
+                </div>
+                <br><br>
+            </center>
+
+            <form id="loginForm">
+
+                <div class="campo">
+                    <label for="nome">Nome completo</label>
+                    <input
+                        type="text"
+                        id="nome"
+                        name="nome"
+                        placeholder="Digite seu nome"
+                        autocomplete="name"
+                        hidden
+                    >
+                </div>
+
+                <div class="campo">
+                    <label for="email">E-mail</label>
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        placeholder="seuemail@gmail.com"
+                        autocomplete="email"
+                        required
+                    >
+                </div>
+
+                <div class="campo">
+                    <label for="senha">Senha</label>
+
+                    <div class="senha-container">
+                        <input
+                            type="password"
+                            id="senha"
+                            name="senha"
+                            placeholder="Digite sua senha"
+                            autocomplete="current-password"
+                            required
+                            minlength="6"
+                        >
+
+                        <button
+                            type="button"
+                            id="mostrarSenha"
+                            aria-label="Mostrar senha"
+                        >
+                            Mostrar
+                        </button>
+                    </div>
+                </div>
+
+                <div class="opcoes">
+                    <label id="lembrarLabel">
+                        <input type="checkbox" id="lembrar">
+                        Lembrar de mim
+                    </label>
+
+                    <button
+                        type="button"
+                        class="link-btn"
+                        id="recuperarSenha"
+                    >
+                        Esqueci minha senha
+                    </button>
+                </div>
+
+                <button type="submit" class="entrar-btn" id="enviarForm">
+                    Entrar na conta
+                </button>
+
+                <p id="mensagem" role="status" aria-live="polite"></p>
+
+            </form>
+
+            <div class="divisor">
+                <span>ou</span>
+            </div>
+
+            <p class="cadastro-texto">
+                Ainda não tem uma conta?
+                <button type="button" id="alternarCadastro">
+                    Criar conta
+                </button>
+            </p>
+
+            <p class="privacidade">
+                Sua segurança e privacidade são importantes.
+                Utilize este espaço com tranquilidade.
+            </p>
+
+        </section>
+
+    </main>
+
+</body>
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meu perfil — VozAtiva</title>
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/index.css">
+    <style>
+      /* ATUALIZAÇÃO 16/11 — visual simples da área de perfil */
+      .perfil-demo {max-width:660px;margin:60px auto;padding:30px;background:var(--card, #fff);
+        color:var(--text, #222);border:1px solid #9995;border-radius:18px;box-shadow:0 6px 24px #0001}
+      .perfil-demo h1 {margin-bottom:12px}
+      .perfil-demo p {line-height:1.6}
+      .perfil-dado {padding:12px 0;border-bottom:1px solid #9994;overflow-wrap:anywhere}
+      .perfil-dado strong {display:block;margin-bottom:3px}
+      .perfil-acoes {display:flex;gap:12px;flex-wrap:wrap;margin-top:22px}
+      .perfil-acoes a,.perfil-acoes button {padding:10px 18px;border-radius:8px;cursor:pointer;
+        background:#355b4a;color:white;border:0;text-decoration:none;font:inherit}
+      .perfil-acoes button {background:#70534e}
+    </style>
+    <script src="js/common.js" defer></script>
+</head>
+<body data-page="perfil">
+    <!-- ATUALIZAÇÃO 16/11 — ÁREA DE PERFIL APENAS DIDÁTICA -->
+    <main class="wrap">
+      <section class="perfil-demo" aria-labelledby="tituloPerfil">
+        <h1 id="tituloPerfil">Meu perfil</h1>
+        <p id="perfilAvisoDemo">Verificando a sessão de demonstração...</p>
+        <div class="perfil-dado"><strong>Nome</strong><span id="perfilNomeDemo">—</span></div>
+        <div class="perfil-dado"><strong>E-mail</strong><span id="perfilEmailDemo">—</span></div>
+        <p><small>Esta página mostra somente dados fictícios da sessão. Não é uma área privada segura.</small></p>
+        <div class="perfil-acoes">
+          <a href="index.html">Voltar ao início</a>
+          <button type="button" onclick="sairDaContaDemo()">Sair da conta</button>
+        </div>
+      </section>
+    </main>
+</body>
+</html>
