@@ -20,7 +20,8 @@ INSERT INTO usuarios (id, nome, email) VALUES
 (2, 'Beatriz Exemplo', 'beatriz@vozativa.example'),
 (3, 'Carla Exemplo', 'carla@vozativa.example'),
 (4, 'Daniela Exemplo', 'daniela@vozativa.example'),
-(5, 'Fernanda Exemplo', 'fernanda@vozativa.example')
+(5, 'Fernanda Exemplo', 'fernanda@vozativa.example'),
+(5, 'Isaias Lindo', 'isaiaslindo@gmail.com')
 ON DUPLICATE KEY UPDATE nome=VALUES(nome);
 
 SELECT id, nome, email FROM usuarios;
