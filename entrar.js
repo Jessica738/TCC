@@ -104,3 +104,47 @@ formulario.addEventListener("submit", function (event) {
         "Formulário validado! Falta conectar o login ao servidor."
     );
 });
+
+function toggleMobileMenu() {
+    const menu = document.getElementById("navLinks");
+    const botao = document.getElementById("menuToggle");
+
+    if (!menu || !botao) return;
+
+    menu.classList.toggle("menu-aberto");
+
+    const aberto = menu.classList.contains("menu-aberto");
+
+    botao.textContent = aberto ? "✕" : "☰";
+    botao.setAttribute(
+        "aria-label",
+        aberto ? "Fechar menu" : "Abrir menu"
+    );
+}
+
+// Fecha o menu ao escolher uma página
+document.addEventListener("DOMContentLoaded", function () {
+
+    const menu = document.getElementById("navLinks");
+    const botao = document.getElementById("menuToggle");
+
+    if (!menu) return;
+
+    menu.querySelectorAll("button").forEach(function (item) {
+
+        item.addEventListener("click", function () {
+
+            if (window.innerWidth <= 900) {
+                menu.classList.remove("menu-aberto");
+
+                if (botao) {
+                    botao.textContent = "☰";
+                    botao.setAttribute("aria-label", "Abrir menu");
+                }
+            }
+
+        });
+
+    });
+
+});

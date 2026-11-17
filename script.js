@@ -1,7 +1,3 @@
-/* =========================================================
-   NAVEGAÇÃO ENTRE PÁGINAS
-========================================================= */
-
 function go(page) {
 
   const pages = document.querySelectorAll('.page');
