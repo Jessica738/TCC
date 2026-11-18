@@ -8,19 +8,23 @@
 
     <title>Entrar | VozAtiva</title>
 
+    <!-- FONTES -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Work+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
 
+    <!-- CSS -->
     <link rel="stylesheet" href="css/common.css">
     <link rel="stylesheet" href="entrar.css">
     <link rel="stylesheet" href="css/acessibilidade.css">
 
+    <!-- MANTER TEMA ESCOLHIDO -->
     <script>
         (function () {
             try {
                 var tema = localStorage.getItem('theme');
+
                 if (tema === 'dark' || tema === 'light') {
                     document.documentElement.setAttribute('data-theme', tema);
                 }
@@ -28,14 +32,18 @@
         })();
     </script>
 
+    <!-- JAVASCRIPT -->
     <script src="js/common.js" defer></script>
+    <script src="dados/usuarios-exemplo.js" defer></script>
     <script src="entrar.js" defer></script>
+
 </head>
 
 <body data-page="entrar">
 
     <!-- BARRA DE SEGURANÇA -->
     <div class="safety-bar">
+
         <div class="safety-inner">
 
             <span class="safety-msg">
@@ -50,26 +58,35 @@
                     <span class="shortcut">(ESC)</span>
                 </button>
 
-                <button class="btn-emergency" type="button"
-                    onclick="openEmergency()" style="background-color:red;">
+                <button
+                    class="btn-emergency"
+                    type="button"
+                    onclick="openEmergency()"
+                    style="background-color: red;"
+                >
                     ⛑ Preciso de ajuda agora
                 </button>
 
             </div>
+
         </div>
+
     </div>
+
 
     <!-- NAVEGAÇÃO -->
     <nav class="mainnav">
 
         <div class="nav-inner">
 
+            <!-- LOGO -->
             <div class="brand">
                 <span class="brand-mark"></span>
                 VozAtiva
             </div>
 
-            <!-- LINKS -->
+
+            <!-- LINKS DO MENU -->
             <div class="nav-links" id="navLinks">
 
                 <button type="button" data-page="home" onclick="navigateTo('home')">
@@ -96,171 +113,256 @@
                     Assistente
                 </button>
 
-                <!-- MAIS -->
+
+                <!-- MENU MAIS -->
                 <div class="dropdown">
 
-                    <button type="button" class="mais-btn"
-                        onclick="toggleMore(event)">
+                    <button
+                        type="button"
+                        class="mais-btn"
+                        onclick="toggleMore(event)"
+                    >
                         Mais ▾
                     </button>
 
                     <div class="dropdown-menu hidden" id="moreMenu">
 
-                        <button type="button" onclick="navigateTo('psicologico')">
+                        <button type="button" data-page="psicologico" onclick="navigateTo('psicologico')">
                             Apoio psicológico
                         </button>
 
-                        <button type="button" onclick="navigateTo('faq')">
+                        <button type="button" data-page="faq" onclick="navigateTo('faq')">
                             Perguntas frequentes
                         </button>
 
-                        <button type="button" onclick="navigateTo('historias')">
+                        <button type="button" data-page="historias" onclick="navigateTo('historias')">
                             Histórias de superação
                         </button>
 
-                        <button type="button" onclick="navigateTo('contatos')">
+                        <button type="button" data-page="contatos" onclick="navigateTo('contatos')">
                             Contatos úteis
                         </button>
 
-                        <button type="button" onclick="navigateTo('materiais')">
+                        <button type="button" data-page="materiais" onclick="navigateTo('materiais')">
                             Materiais educativos
                         </button>
 
-                        <button type="button" onclick="navigateTo('estatisticas')">
+                        <button type="button" data-page="estatisticas" onclick="navigateTo('estatisticas')">
                             Estatísticas
                         </button>
 
-                        <button type="button" onclick="navigateTo('campanhas')">
+                        <button type="button" data-page="campanhas" onclick="navigateTo('campanhas')">
                             Campanhas
                         </button>
 
                     </div>
+
                 </div>
 
             </div>
 
+
             <!-- LADO DIREITO -->
             <div class="nav-right">
 
-                <button class="icon-btn" id="themeBtn"
-                    type="button" onclick="toggleTheme()"
-                    aria-label="Alternar modo escuro">
+                <!-- MODO ESCURO -->
+                <button
+                    class="icon-btn"
+                    id="themeBtn"
+                    type="button"
+                    onclick="toggleTheme()"
+                    aria-label="Alternar modo escuro"
+                >
                     ◐
                 </button>
 
-                <button class="login-btn" type="button"
-                    onclick="openLogin()">
+                <!-- ENTRAR -->
+                <button
+                    class="login-btn"
+                    type="button"
+                    onclick="openLogin()"
+                >
                     Entrar
                 </button>
 
                 <!-- MENU HAMBÚRGUER -->
-                <button class="menu-toggle" id="menuToggle"
-                    type="button" onclick="toggleMobileMenu()"
-                    aria-label="Abrir menu">
+                <button
+                    class="menu-toggle"
+                    id="menuToggle"
+                    type="button"
+                    onclick="toggleMobileMenu()"
+                    aria-label="Abrir menu"
+                >
                     ☰
                 </button>
 
             </div>
 
         </div>
+
     </nav>
+
 
     <!-- CONTEÚDO LOGIN -->
     <main class="login-page">
 
         <section class="login-card">
 
+            <!-- VOLTAR -->
             <a href="index.html" class="voltar">
                 ← Voltar para o início
             </a>
 
-            <center>
-                <div class="login-logo">
-                    <h1>Boas-vindas!</h1>
-                </div>
 
-                <p id="formDescricao">
-                    Entre na sua conta para continuar.
-                </p>
+            <!-- TÍTULO -->
+            <div class="login-logo">
+                <h1 id="formTitulo">Boas-vindas!</h1>
+            </div>
 
-                <br><br>
-            </center>
+            <p id="formDescricao">
+                Entre na sua conta para continuar.
+            </p>
 
+            <br><br>
+
+
+            <!-- FORMULÁRIO -->
             <form id="loginForm">
 
-                <div class="campo" id="campoNome" hidden>
+                <!-- NOME: APARECE SOMENTE NO CADASTRO -->
+                <div class="campo" id="campoNomeCadastro" hidden>
+
                     <label for="nome">Nome completo</label>
-                    <input type="text" id="nome" name="nome"
+
+                    <input
+                        type="text"
+                        id="nome"
+                        name="nome"
                         placeholder="Digite seu nome"
-                        autocomplete="name">
+                        autocomplete="name"
+                    >
+
                 </div>
 
+
+                <!-- E-MAIL -->
                 <div class="campo">
+
                     <label for="email">E-mail</label>
-                    <input type="email" id="email" name="email"
+
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
                         placeholder="seuemail@gmail.com"
-                        autocomplete="email" required>
+                        autocomplete="email"
+                        required
+                    >
+
                 </div>
 
+
+                <!-- SENHA -->
                 <div class="campo">
+
                     <label for="senha">Senha</label>
 
                     <div class="senha-container">
 
-                        <input type="password" id="senha" name="senha"
+                        <input
+                            type="password"
+                            id="senha"
+                            name="senha"
                             placeholder="Digite sua senha"
                             autocomplete="current-password"
-                            required minlength="6">
+                            required
+                            minlength="6"
+                        >
 
-                        <button type="button" id="mostrarSenha"
-                            aria-label="Mostrar senha">
+                        <button
+                            type="button"
+                            id="mostrarSenha"
+                            aria-label="Mostrar senha"
+                        >
                             Mostrar
                         </button>
 
                     </div>
+
                 </div>
 
+
+                <!-- OPÇÕES -->
                 <div class="opcoes">
 
                     <label id="lembrarLabel">
+
                         <input type="checkbox" id="lembrar">
+
                         Lembrar de mim
+
                     </label>
 
-                    <button type="button" class="link-btn"
-                        id="recuperarSenha">
+
+                    <button
+                        type="button"
+                        class="link-btn"
+                        id="recuperarSenha"
+                    >
                         Esqueci minha senha
                     </button>
 
                 </div>
 
-                <button type="submit" class="entrar-btn" id="enviarForm">
+
+                <!-- ENVIAR -->
+                <button
+                    type="submit"
+                    class="entrar-btn"
+                    id="enviarForm"
+                >
                     Entrar na conta
                 </button>
 
-                <p id="mensagem" role="status" aria-live="polite"></p>
+
+                <!-- MENSAGEM -->
+                <p
+                    id="mensagem"
+                    role="status"
+                    aria-live="polite"
+                ></p>
 
             </form>
 
+
+            <!-- DIVISOR -->
             <div class="divisor">
                 <span>ou</span>
             </div>
 
+
+            <!-- CRIAR CONTA -->
             <p class="cadastro-texto">
+
                 Ainda não tem uma conta?
 
                 <button type="button" id="alternarCadastro">
                     Criar conta
                 </button>
+
             </p>
 
+
+            <!-- PRIVACIDADE -->
             <p class="privacidade">
                 Sua segurança e privacidade são importantes.
                 Utilize este espaço com tranquilidade.
             </p>
 
         </section>
+
     </main>
+
 
     <!-- MODAL DE EMERGÊNCIA -->
     <div id="emergencyModal" class="modal-overlay hidden">
@@ -274,35 +376,55 @@
                 É gratuito e funciona 24 horas.
             </p>
 
+
             <div class="hotline-row modal-hotlines">
 
                 <div class="hotline">
+
                     <div class="num">190</div>
+
                     <div class="lbl">Polícia</div>
+
                 </div>
 
+
                 <div class="hotline">
+
                     <div class="num">180</div>
+
                     <div class="lbl">Central da Mulher</div>
+
                 </div>
 
             </div>
 
-            <button class="modal-close" type="button"
-                onclick="closeModal('emergencyModal')">
+
+            <button
+                class="modal-close"
+                type="button"
+                onclick="closeModal('emergencyModal')"
+            >
                 Fechar
             </button>
 
         </div>
+
     </div>
+
 
     <!-- VLIBRAS -->
     <div vw class="enabled">
+
         <div vw-access-button class="active"></div>
+
         <div vw-plugin-wrapper>
+
             <div class="vw-plugin-top-wrapper"></div>
+
         </div>
+
     </div>
+
 
     <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
 
@@ -312,7 +434,10 @@
         );
     </script>
 
+
+    <!-- ACESSIBILIDADE -->
     <script src="js/acessibilidade.js"></script>
 
 </body>
+
 </html>

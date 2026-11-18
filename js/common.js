@@ -35,6 +35,13 @@
        PÁGINAS EXTERNAS
        --------------------------------------------------------- */
 
+    // ATUALIZAÇÃO 18/11 - solicitar login apenas para o formulário de denúncia.
+    // Informações públicas, emergência e canais de ajuda permanecem acessíveis.
+    if (page === "denuncias" && !obterUsuarioDemo()) {
+        solicitarLoginDemo("denuncias.html");
+        return;
+    }
+
     if (paginasExternas[page]) {
 
         fecharMenuMobile();
@@ -87,6 +94,8 @@
             "vozativa_secao",
             secaoId
         );
+        // ATUALIZAÇÃO 18/11 - permitir abrir seção pública sem sessão.
+        sessionStorage.setItem("vozativa_public_navigation_once", "1");
 
         fecharMenuMobile();
 
@@ -617,6 +626,7 @@ document.addEventListener("click", function (event) {
 /* =========================================================
    LOGIN
    ========================================================= */
+
    function openLogin() {
     window.location.href = "entrar.html";
 }
@@ -686,3 +696,87 @@ document.addEventListener(
 
     }
 );
+
+// =========================================================
+// ATUALIZAÇÃO 16/11 — ÁREA DE PERFIL DIDÁTICA
+// Usa somente nome/e-mail da sessão de demonstração existente.
+// Não consulta nem altera banco.sql, JSON ou senhas.
+// Não é autenticação nem proteção de páginas ou dados reais.
+// =========================================================
+function obterUsuarioDemo() {
+    try {
+        const valor = sessionStorage.getItem("vozativa_demo_usuario");
+        const usuario = valor ? JSON.parse(valor) : null;
+        if (usuario && typeof usuario.nome === "string" &&
+            typeof usuario.email === "string") return usuario;
+        // Compatibilidade com o login demonstrativo anterior.
+        const nomeAntigo = sessionStorage.getItem("vozativa_demo_nome");
+        return nomeAntigo ? { nome: nomeAntigo, email: "" } : null;
+    } catch (erro) {
+        return null;
+    }
+}
+
+function sairDaContaDemo() {
+    sessionStorage.removeItem("vozativa_demo_usuario");
+    sessionStorage.removeItem("vozativa_demo_nome");
+    sessionStorage.removeItem("vozativa_after_login");
+    // ATUALIZAÇÃO 18/11 - Sair volta à tela de login, sem deixar a página aberta.
+    window.location.replace("entrar.html");
+}
+
+function solicitarLoginDemo(destino) {
+    if (destino) sessionStorage.setItem("vozativa_after_login", destino);
+    window.location.href = "entrar.html";
+}
+
+function atualizarMenuUsuarioDemo() {
+    const usuario = obterUsuarioDemo();
+    // Atualiza a barra de navegação presente em todas as páginas.
+    document.querySelectorAll(".nav-right .login-btn").forEach(function(botao) {
+        if (!usuario) return;
+        botao.textContent = "Minha conta: " + usuario.nome.split(" ")[0];
+        botao.removeAttribute("onclick");
+        botao.setAttribute("aria-label", "Abrir meu perfil de demonstração");
+        botao.onclick = function() { window.location.href = "perfil.html"; };
+    });
+
+    // O botão Sair é criado somente para quem fez login.
+    document.querySelectorAll(".nav-right").forEach(function(barra) {
+        if (!usuario || barra.querySelector("[data-vozativa-sair]")) return;
+        const sair = document.createElement("button");
+        sair.type = "button";
+        sair.dataset.vozativaSair = "";
+        sair.className = "login-btn";
+        sair.textContent = "Sair";
+        // ATUALIZAÇÃO 18/11 - espaçamento controlado pelo layout do cabeçalho.
+        sair.style.backgroundColor = "transparent";
+        sair.style.border = "1px solid currentColor";
+        sair.addEventListener("click", sairDaContaDemo);
+        barra.appendChild(sair);
+    });
+
+    // Os campos só existem na nova página perfil.html.
+    const campoNome = document.getElementById("perfilNomeDemo");
+    const campoEmail = document.getElementById("perfilEmailDemo");
+    const aviso = document.getElementById("perfilAvisoDemo");
+    if (campoNome) campoNome.textContent = usuario ? usuario.nome : "Nenhum usuário conectado";
+    if (campoEmail) campoEmail.textContent = usuario && usuario.email ? usuario.email : "—";
+    if (aviso) aviso.textContent = usuario
+        ? "Você está usando uma conta de demonstração."
+        : "Entre com uma conta fictícia para ver seu perfil.";
+}
+
+// ATUALIZAÇÃO 16/11 — monta o menu no carregamento de cada página.
+// ATUALIZAÇÃO 18/11 - primeiro acesso: mostrar login antes do conteúdo inicial.
+// O menu e as páginas informativas continuam públicos.
+(function iniciarPeloLogin() {
+    const nomeArquivo = location.pathname.split("/").pop().toLowerCase();
+    const inicial = nomeArquivo === "index.html" || nomeArquivo === "";
+    if (!inicial || obterUsuarioDemo()) return;
+    const navegacaoPublica = sessionStorage.getItem("vozativa_public_navigation_once") === "1";
+    sessionStorage.removeItem("vozativa_public_navigation_once");
+    if (!navegacaoPublica) window.location.replace("entrar.html");
+})();
+
+document.addEventListener("DOMContentLoaded", atualizarMenuUsuarioDemo);

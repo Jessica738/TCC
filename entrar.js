@@ -13,6 +13,14 @@ const lembrarLabel = document.getElementById("lembrarLabel");
 
 let modoCadastro = false;
 
+// ATUALIZAÇÃO 16/11 — aviso exibido ao retornar à tela de login após cadastro.
+const retornoCadastro = sessionStorage.getItem("vozativa_demo_cadastro_sucesso");
+if (retornoCadastro) {
+    sessionStorage.removeItem("vozativa_demo_cadastro_sucesso");
+    document.getElementById("email").value = retornoCadastro;
+    mostrarMensagem("Conta de demonstração criada! Entre com o e-mail e a senha cadastrados.");
+}
+
 function mostrarMensagem(texto) {
     mensagem.textContent = texto;
 }
@@ -20,6 +28,8 @@ function mostrarMensagem(texto) {
 botaoCadastro.addEventListener("click", function () {
     modoCadastro = !modoCadastro;
 
+    // ATUALIZAÇÃO 16/11 - alterna o bloco todo, não apenas o input.
+    document.getElementById("campoNomeCadastro").hidden = !modoCadastro;
     campoNome.hidden = !modoCadastro;
     campoNome.required = modoCadastro;
 
@@ -76,75 +86,126 @@ recuperarSenha.addEventListener("click", function () {
     );
 });
 
-formulario.addEventListener("submit", function (event) {
+// ===============================================================
+// ATUALIZAÇÃO 16/11 — LOGIN E CADASTRO DIDÁTICOS
+// JSON é usado ao abrir por HTTP/HTTPS. Quando o aluno abre index.html
+// diretamente (file://), os dados de exemplo vêm do arquivo .js auxiliar.
+// Senhas são fictícias. Não usar para pessoas/relatos reais.
+// ===============================================================
+const CHAVE_CADASTROS_DEMO = "vozativa_cadastros_ficticios_v1";
+
+function lerCadastrosDemo() {
+    try {
+        const dados = JSON.parse(localStorage.getItem(CHAVE_CADASTROS_DEMO) || "[]");
+        return Array.isArray(dados) ? dados : [];
+    } catch (erro) {
+        return [];
+    }
+}
+
+async function carregarUsuariosDemo() {
+    if (location.protocol === "file:") {
+        return window.VOZATIVA_USUARIOS_EXEMPLO || [];
+    }
+    try {
+        const resposta = await fetch("dados/usuarios.json", { cache: "no-store" });
+        if (!resposta.ok) throw new Error("Falha ao carregar usuarios.json");
+        const dados = await resposta.json();
+        return Array.isArray(dados) ? dados : [];
+    } catch (erro) {
+        console.warn("ATUALIZAÇÃO 16/11: JSON indisponível.", erro);
+        throw new Error("Não foi possível ler o JSON de usuários fictícios.");
+    }
+}
+
+// SHA-256 aqui serve apenas à atividade local; não é autenticação segura.
+// Um login verdadeiro exige servidor, armazenamento e hash de senhas adequado.
+async function resumoSenhaDemo(senha) {
+    // ATUALIZAÇÃO 16/11 - fallback apenas para a atividade em file://.
+    // Não é seguro para senhas reais: utilizar somente usuários fictícios.
+    if (!window.crypto || !crypto.subtle) {
+        let codigo = 2166136261;
+        for (const caractere of String(senha)) {
+            codigo = Math.imul(codigo ^ caractere.charCodeAt(0), 16777619);
+        }
+        return "demo-" + (codigo >>> 0).toString(16);
+    }
+    const bytes = new TextEncoder().encode(senha);
+    const resumo = await crypto.subtle.digest("SHA-256", bytes);
+    return Array.from(new Uint8Array(resumo))
+        .map(parte => parte.toString(16).padStart(2, "0")).join("");
+}
+
+formulario.addEventListener("submit", async function (event) {
     event.preventDefault();
 
     const nome = campoNome.value.trim();
-    const email = document.getElementById("email").value.trim();
+    const email = document.getElementById("email").value.trim().toLowerCase();
     const senha = campoSenha.value;
 
     if (modoCadastro && !nome) {
         mostrarMensagem("Digite seu nome completo.");
         return;
     }
-
     if (senha.length < 6) {
         mostrarMensagem("A senha deve ter pelo menos 6 caracteres.");
         return;
     }
 
-    if (modoCadastro) {
-        mostrarMensagem(
-            "Formulário validado! Falta conectar o cadastro ao servidor."
-        );
-        return;
-    }
+    botaoEnviar.disabled = true;
+    try {
+        const exemplos = await carregarUsuariosDemo();
+        const cadastrados = lerCadastrosDemo();
 
-    mostrarMensagem(
-        "Formulário validado! Falta conectar o login ao servidor."
-    );
-});
-
-function toggleMobileMenu() {
-    const menu = document.getElementById("navLinks");
-    const botao = document.getElementById("menuToggle");
-
-    if (!menu || !botao) return;
-
-    menu.classList.toggle("menu-aberto");
-
-    const aberto = menu.classList.contains("menu-aberto");
-
-    botao.textContent = aberto ? "✕" : "☰";
-    botao.setAttribute(
-        "aria-label",
-        aberto ? "Fechar menu" : "Abrir menu"
-    );
-}
-
-// Fecha o menu ao escolher uma página
-document.addEventListener("DOMContentLoaded", function () {
-
-    const menu = document.getElementById("navLinks");
-    const botao = document.getElementById("menuToggle");
-
-    if (!menu) return;
-
-    menu.querySelectorAll("button").forEach(function (item) {
-
-        item.addEventListener("click", function () {
-
-            if (window.innerWidth <= 900) {
-                menu.classList.remove("menu-aberto");
-
-                if (botao) {
-                    botao.textContent = "☰";
-                    botao.setAttribute("aria-label", "Abrir menu");
-                }
+        if (modoCadastro) {
+            if (exemplos.some(u => u.email.toLowerCase() === email) ||
+                cadastrados.some(u => u.email === email)) {
+                mostrarMensagem("Este e-mail já está cadastrado.");
+                return;
             }
+            const senhaHash = await resumoSenhaDemo(senha);
+            cadastrados.push({ id: "demo-" + Date.now(), nome, email, senhaHash });
+            localStorage.setItem(CHAVE_CADASTROS_DEMO, JSON.stringify(cadastrados));
+            // ATUALIZAÇÃO 18/11 - cadastrou: já inicia a sessão fictícia.
+            sessionStorage.setItem("vozativa_demo_usuario", JSON.stringify({ nome, email }));
+            sessionStorage.setItem("vozativa_demo_nome", nome);
+            sessionStorage.removeItem("vozativa_demo_cadastro_sucesso");
+            mostrarMensagem("Conta de demonstração criada! Bem-vindo(a), " + nome + "!");
+            const destinoCadastro = sessionStorage.getItem("vozativa_after_login");
+            sessionStorage.removeItem("vozativa_after_login");
+            window.location.href = destinoCadastro === "denuncias.html" ? destinoCadastro : "index.html";
+            return;
+        }
 
-        });
-
-    });
-
+        const usuarioLocal = cadastrados.find(u => u.email === email);
+        let usuario = null;
+        if (usuarioLocal && usuarioLocal.senhaHash === await resumoSenhaDemo(senha)) {
+            usuario = usuarioLocal;
+        } else if (!usuarioLocal) {
+            usuario = exemplos.find(u => u.email.toLowerCase() === email && u.senha === senha);
+        }
+        if (!usuario) {
+            mostrarMensagem("E-mail ou senha incorretos.");
+            return;
+        }
+        // Guarda somente o primeiro nome fictício para esta demonstração.
+        // ATUALIZAÇÃO 16/11 — guarda os dados mínimos para exibir o perfil.
+        sessionStorage.setItem("vozativa_demo_usuario", JSON.stringify({
+            nome: usuario.nome,
+            email: usuario.email
+        }));
+        sessionStorage.setItem("vozativa_demo_nome", usuario.nome);
+        mostrarMensagem("Bem-vindo(a), " + usuario.nome + "! Redirecionando...");
+        // ATUALIZAÇÃO 18/11 - retorna ao formulário de denúncia se foi a ação solicitada.
+        const destinoLogin = sessionStorage.getItem("vozativa_after_login");
+        sessionStorage.removeItem("vozativa_after_login");
+        setTimeout(() => {
+            window.location.href = destinoLogin === "denuncias.html" ? destinoLogin : "index.html";
+        }, 350);
+    } catch (erro) {
+        mostrarMensagem(erro.message || "Erro ao verificar os dados de teste.");
+        console.error("ATUALIZAÇÃO 16/11 — erro no login:", erro);
+    } finally {
+        botaoEnviar.disabled = false;
+    }
 });
