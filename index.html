@@ -64,107 +64,30 @@
             VozAtiva
         </div>
 
-        <!-- LINKS DO MENU -->
-        
+        <div class="nav-links" id="navLinks">
+            <button type="button" data-page="home" onclick="navigateTo('home')">Início</button>
+            <button type="button" data-page="noticias" onclick="navigateTo('noticias')">Notícias</button>
+            <button type="button" data-page="denuncias" onclick="navigateTo('denuncias')">Denúncias</button>
+            <button type="button" data-page="ajuda" onclick="navigateTo('ajuda')">Onde buscar ajuda</button>
+            <button type="button" data-page="mapa" onclick="navigateTo('mapa')">Mapa</button>
+            <button type="button" data-page="chat" onclick="navigateTo('chat')">Assistente</button>
 
-            <button type="button" data-page="home" onclick="navigateTo('home')">
-                Início
-            </button>
-
-            <button type="button" data-page="noticias" onclick="navigateTo('noticias')">
-                Notícias
-            </button>
-
-            <button type="button" data-page="denuncias" onclick="navigateTo('denuncias')">
-                Denúncias
-            </button>
-
-            <button type="button" data-page="ajuda" onclick="navigateTo('ajuda')">
-                Onde buscar ajuda
-            </button>
-
-            <button type="button" data-page="mapa" onclick="navigateTo('mapa')">
-                Mapa
-            </button>
-
-            <button type="button" data-page="chat" onclick="navigateTo('chat')">
-                Assistente
-            </button>
-
-            <!-- MAIS --><div class="nav-links" id="navLinks">
             <div class="dropdown">
-
-                <button
-                    type="button"
-                    class="mais-btn"
-                    onclick="toggleMore(event)"
-                >
-                    Mais ▾
-                </button>
+                <button type="button" onclick="toggleMore(event)">Mais ▾</button>
 
                 <div class="dropdown-menu hidden" id="moreMenu">
-
-                    <button
-                        type="button"
-                        data-page="psicologico"
-                        onclick="navigateTo('psicologico')"
-                    >
-                        Apoio psicológico
-                    </button>
-
-                    <button
-                        type="button"
-                        data-page="faq"
-                        onclick="navigateTo('faq')"
-                    >
-                        Perguntas frequentes
-                    </button>
-
-                    <button
-                        type="button"
-                        data-page="historias"
-                        onclick="navigateTo('historias')"
-                    >
-                        Histórias de superação
-                    </button>
-
-                    <button
-                        type="button"
-                        data-page="contatos"
-                        onclick="navigateTo('contatos')"
-                    >
-                        Contatos úteis
-                    </button>
-
-                    <button
-                        type="button"
-                        data-page="materiais"
-                        onclick="navigateTo('materiais')"
-                    >
-                        Materiais educativos
-                    </button>
-
-                    <button
-                        type="button"
-                        data-page="estatisticas"
-                        onclick="navigateTo('estatisticas')"
-                    >
-                        Estatísticas
-                    </button>
-
-                    <button
-                        type="button"
-                        data-page="campanhas"
-                        onclick="navigateTo('campanhas')"
-                    >
-                        Campanhas
-                    </button>
-
+                    <button type="button" data-page="psicologico" onclick="navigateTo('psicologico')">Apoio psicológico</button>
+                    <button type="button" data-page="faq" onclick="navigateTo('faq')">Perguntas frequentes</button>
+                    <button type="button" data-page="historias" onclick="navigateTo('historias')">Histórias de superação</button>
+                    <button type="button" data-page="contatos" onclick="navigateTo('contatos')">Contatos úteis</button>
+                    <button type="button" data-page="materiais" onclick="navigateTo('materiais')">Materiais educativos</button>
+                    <button type="button" data-page="estatisticas" onclick="navigateTo('estatisticas')">Estatísticas</button>
+                    <button type="button" data-page="campanhas" onclick="navigateTo('campanhas')">Campanhas</button>
                 </div>
             </div>
-
         </div>
 
+          
         <!-- LADO DIREITO -->
         <div class="nav-right">
 

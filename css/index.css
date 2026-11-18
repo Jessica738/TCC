@@ -68,3 +68,7 @@
   border-radius:6px;
   text-transform:uppercase;
 }
+utton {
+  font-family: var(--font-body);
+  cursor: pointer;
+}
